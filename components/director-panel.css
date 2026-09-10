@@ -81,11 +81,13 @@
 .director-transition .shortcut-hint{font-size:9px;margin-top:2px;line-height:1.6;color:#697f8c}
 @media(max-width:760px){.desk-overlays{grid-column:1/-1}.desk-overlay-keys{grid-template-columns:repeat(8,minmax(0,1fr))}.director-transition .shortcut-hint{grid-column:1/-1}}
 @media(max-width:480px){.desk-overlay-keys{grid-template-columns:repeat(4,minmax(0,1fr))}}
-/* Let the source banks determine console height, keeping TAKE controls in view. */
+/* Both columns share a content-driven height; controls never need a nested scroll. */
 @media(min-width:761px){
- .director-transition{contain:size;min-height:0;align-self:stretch;margin-block:24px;overflow:hidden;padding:16px;gap:12px}
- .desk-options{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#42574f transparent;padding-right:2px}
+ .director-transition{align-self:stretch;margin-block:24px;padding:16px;gap:12px}
+ .desk-options{flex:1 0 auto}
  .desk-execution{flex-shrink:0}
+ .director-buses{display:flex;flex-direction:column}
+ .director-buses>.bus-bank+.bus-bank{margin-top:auto;padding-top:20px}
 }
 .desk-options,.desk-execution{display:flex;flex-direction:column;gap:9px}
 .desk-options .desk-caption{padding-bottom:10px}

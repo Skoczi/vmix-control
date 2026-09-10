@@ -4,6 +4,12 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.7.4 — Room for every control
+
+- Let the Switcher grow to fit transitions, overlays and CUT/AUTO without an inner scrollbar.
+- Keep both desktop columns aligned, with the preview bank anchored at the bottom.
+- Preserve tile-size preferences and the flowing mobile layout.
+
 ## 19.7.3 — A quieter transition panel
 
 - Remove the status line beneath CUT/AUTO.

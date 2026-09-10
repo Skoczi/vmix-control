@@ -8,6 +8,7 @@ Read the [changelog](../CHANGELOG.md) for version notes. [SHA-256 checksums and 
 
 | Release | Changes |
 | --- | --- |
+| [v19.7.4](https://github.com/Skoczi/vmix-control/releases/tag/v19.7.4) | Room for every control |
 | [v19.7.3](https://github.com/Skoczi/vmix-control/releases/tag/v19.7.3) | A quieter transition panel |
 | [v19.7.2](https://github.com/Skoczi/vmix-control/releases/tag/v19.7.2) | Same desk, every view |
 | [v19.7.1](https://github.com/Skoczi/vmix-control/releases/tag/v19.7.1) | A sidebar that fits |

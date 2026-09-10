@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.7.4",
+    "title": "v19.7.4 · Room for every control",
+    "file": "vmix-control-windows-v19.7.4.zip",
+    "sha256": "2c5386e19c0e6457cede95c7c4f2ee102d0673469b8425d6f96445e681b83b8a",
+    "bytes": 248869,
+    "archived": false
+  },
+  {
     "tag": "v19.7.3",
     "title": "v19.7.3 · A quieter transition panel",
     "file": "vmix-control-windows-v19.7.3.zip",
     "sha256": "7267e3d5efa48c847cc477c558c9ecf39cf04a57c748d34ba342798362b9fcda",
     "bytes": 248888,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.7.2",
