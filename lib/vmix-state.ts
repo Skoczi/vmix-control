@@ -1,7 +1,8 @@
+import type {ProgramState} from './program-controls.ts';
 import {validMixNumber} from './vmix-limits.ts';
 export type Source = { key: string; number: string; title: string; type: string; state: string };
 export type MixInfo = { id: string; name: string };
-export type Snapshot = { inputs: Source[]; mixes: Record<number, string>; previews?: Record<number, string>; mixInfo: Record<number, MixInfo>; version: string };
+export type Snapshot = { program?:ProgramState; inputs: Source[]; mixes: Record<number, string>; previews?: Record<number, string>; mixInfo: Record<number, MixInfo>; version: string };
 
 // vMix numbers additional mixes in input-list order. Keep the input GUID as the
 // operator selection so removing a mix cannot silently select its replacement.

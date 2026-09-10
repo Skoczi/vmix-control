@@ -71,3 +71,5 @@ Current automated coverage includes routing, mix identity, multi-operator conten
 ---
 
 © 2026 [Skoczi.dev](https://skoczi.dev) · Independent project. Not affiliated with or endorsed by vMix.
+
+See the [PGM capability review](docs/PGM-CAPABILITIES.md) for implemented controls, vMix restrictions and the next production modules.

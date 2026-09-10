@@ -1,0 +1,9 @@
+export const programRows=`
+PGM controls|Sterowanie PGM|PGM-Steuerung|Commandes PGM|Controles PGM|Comenzi PGM|Управление PGM|Controlli PGM|Controlos PGM|Керування PGM
+Production controls|Sterowanie realizacją|Produktionssteuerung|Commandes de production|Controles de producción|Comenzi de producție|Управление эфиром|Controlli di produzione|Controlos de produção|Керування ефіром
+Shared channels|Wspólne kanały|Gemeinsame Kanäle|Canaux partagés|Canales compartidos|Canale partajate|Общие каналы|Canali condivisi|Canais partilhados|Спільні канали
+Restore PGM|Przywróć PGM|PGM wiederherstellen|Rétablir PGM|Restaurar PGM|Restabilește PGM|Восстановить PGM|Ripristina PGM|Restaurar PGM|Відновити PGM
+Fade PGM to black|Wygaszaj PGM|PGM ausblenden|Fondu PGM au noir|Fundir PGM a negro|Estompează PGM la negru|Затемнить PGM|Dissolvi PGM al nero|Desvanecer PGM para preto|Затемнити PGM
+Select stinger, then AUTO. Configure in vMix.|Wybierz stinger, potem AUTO. Konfiguracja w vMix.|Stinger wählen, dann AUTO. Konfiguration in vMix.|Choisir le stinger, puis AUTO. Configuration dans vMix.|Selecciona el stinger y luego AUTO. Configúralo en vMix.|Alege stingerul, apoi AUTO. Configurează în vMix.|Выберите стингер, затем AUTO. Настройка в vMix.|Seleziona lo stinger, poi AUTO. Configura in vMix.|Seleciona o stinger e depois AUTO. Configura no vMix.|Виберіть стінгер, потім AUTO. Налаштування у vMix.
+OUT clears this shared channel on every mix.|OUT wyłącza ten wspólny kanał na wszystkich mixach.|OUT deaktiviert diesen gemeinsamen Kanal auf allen Mixen.|OUT désactive ce canal partagé sur tous les mix.|OUT desactiva este canal compartido en todos los mixes.|OUT dezactivează acest canal partajat pe toate mixurile.|OUT отключает этот общий канал на всех миксах.|OUT disattiva questo canale condiviso su tutti i mix.|OUT desativa este canal partilhado em todos os mixes.|OUT вимикає цей спільний канал на всіх міксах.
+`;

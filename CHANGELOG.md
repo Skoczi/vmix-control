@@ -4,6 +4,18 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.5 — PGM gets a production tray
+
+- Dedicated stinger selectors in the main Switcher. Select a slot, then AUTO.
+- Overlay source selection and IN/OUT controls for channels reported by vMix.
+- FTB activation and restore with confirmed state; read-only REC, STREAM and EXT indicators.
+- Shared overlay and FTB state in demo. No video rendering is simulated.
+- Stale commands are rejected; uncertain commands are not retried.
+- Added a documentation review covering PGM, shared channels and global production controls.
+
+Overlay OUT affects the shared channel. Animation assets and overlay effects remain configured in vMix. Physical vMix verification is still needed.
+
+
 ## 19.4.2 — Feedback without the takeover
 
 - Move operation feedback to a compact bottom-left toast with a quiet dark background.

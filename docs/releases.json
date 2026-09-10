@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.5",
+    "title": "v19.5 · PGM gets a production tray",
+    "file": "vmix-control-windows-v19.5.zip",
+    "sha256": "9ac5b3ad4b00f55c2d34b3e2f821d8ebb44a42e9397b725166018a11b5c0adff",
+    "bytes": 19340,
+    "archived": false
+  },
+  {
     "tag": "v19.4.2",
     "title": "v19.4.2 · Feedback without the takeover",
     "file": "vmix-control-windows-v19.4.2.zip",
     "sha256": "6ee744c21b42cd827755eb8bf55e75fcd84526c45caf2218dcb7826568a8c0ae",
     "bytes": 227610,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.4.1",

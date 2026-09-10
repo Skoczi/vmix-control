@@ -1,6 +1,6 @@
 {
   "name": "vmix-control",
-  "version": "19.4.2",
+  "version": "19.5.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"

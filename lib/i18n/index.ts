@@ -1,10 +1,11 @@
+import {programRows} from './program.ts';
 import {LANGUAGES,rows,type Language} from './catalog.ts';
 import {messageRows,aliases} from './messages.ts';
 import {accessRows} from './access.ts';
 import {operationsRows} from './operations.ts';
 import {dynamicRows} from './dynamic.ts';
 export {LANGUAGES,type Language};
-export const catalog=[rows,messageRows,dynamicRows,operationsRows,accessRows].flatMap(text=>text.trim().split('\n').map(line=>line.split('|')));
+export const catalog=[rows,messageRows,dynamicRows,operationsRows,accessRows,programRows].flatMap(text=>text.trim().split('\n').map(line=>line.split('|')));
 export function isLanguage(value:unknown):value is Language{return LANGUAGES.some(([code])=>code===value);}
 const dictionary=new Map<string,string[]>();
 for(const row of catalog){if(row.length!==LANGUAGES.length||row.some(s=>!s))throw new Error(`Incomplete translation: ${row[0]}`);dictionary.set(row[1],row);}

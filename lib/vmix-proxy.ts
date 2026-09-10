@@ -1,3 +1,4 @@
+import {readProgramState,validateProgramControl,type ProgramControl} from './program-controls.ts';
 import {isLocalRequest} from './local-access.ts';
 import {validMixNumber} from './vmix-limits.ts';
 import {createDemoFetcher} from './vmix-demo.ts';
@@ -49,10 +50,11 @@ export function createVmixService({fetcher=fetch,now=Date.now,sleep=(ms)=>new Pr
     const origin=request.headers.get('origin');
     if(origin && origin!==new URL(request.url).origin) return new Response('Niedozwolone źródło żądania.',{status:403});
     if(!request.headers.get('content-type')?.startsWith('application/json')) return new Response('Wymagany JSON.',{status:415});
-    let body:Record<string,unknown>;let base:URL;let transition:Record<string,string>={};
+    let body:Record<string,unknown>;let base:URL;let transition:Record<string,string>={};let control:ProgramControl|undefined;
     try {
       const raw=await request.text();if(raw.length>4096)throw new Error('Zbyt duże żądanie.');
       body=JSON.parse(raw);base=vmixUrl(body.address);
+      if(body.control!==undefined){control=validateProgramControl(body.control);if(body.mix!==1||body.mixId!=='main'||body.input!==undefined||body.action!==undefined)throw Error('Program controls require PGM.');}
       if(body.action!==undefined&&!['preview','take','route','back'].includes(String(body.action)))throw new Error('Nieprawidłowa operacja.');
       if(body.input!==undefined){
         if(typeof body.input!=='string'||!/^[a-zA-Z0-9-]{1,80}$/.test(body.input)||typeof body.mix!=='number'||!validMixNumber(body.mix)||typeof body.play!=='boolean'||typeof body.mixId!=='string'||!body.mixId)throw new Error('Nieprawidłowy input lub identyfikator mixu. Odśwież panel.');
@@ -62,7 +64,7 @@ export function createVmixService({fetcher=fetch,now=Date.now,sleep=(ms)=>new Pr
     const identity=canonicalVmixUrl(base.href,localAddresses).href;
     if(instance && instance!==identity)return json({status:'wrong-instance',message:`Ten dashboard jest połączony z ${routingAddress}. Użyj tego adresu. Aby zmienić komputer vMix, uruchom ponownie serwer dashboardu.`},409);
     instance ??= identity; routingAddress ??= base.href; base=new URL(routingAddress);
-    if(body.input===undefined){try{const xml=await read(base);instanceConfirmed=true;return new Response(xml,{headers:{'Content-Type':'application/xml','Cache-Control':'no-store'}});}catch(e){if(!instanceConfirmed){instance=undefined;routingAddress=undefined;}return new Response(e instanceof Error?e.message:'Brak połączenia z vMix.',{status:502});}}
+    if(body.input===undefined&&!control){try{const xml=await read(base);instanceConfirmed=true;return new Response(xml,{headers:{'Content-Type':'application/xml','Cache-Control':'no-store'}});}catch(e){if(!instanceConfirmed){instance=undefined;routingAddress=undefined;}return new Response(e instanceof Error?e.message:'Brak połączenia z vMix.',{status:502});}}
     const mix=Number(body.mix); const lock=`instance|${mix}`;
     if(locks.has(lock))return json({message:'Ten mix wykonuje polecenie innego operatora. Poczekaj na zakończenie.',status:'busy'},409);
     locks.add(lock);
@@ -70,6 +72,33 @@ export function createVmixService({fetcher=fetch,now=Date.now,sleep=(ms)=>new Pr
     try {
       const before=readVmixState(await read(base,true));instanceConfirmed=true;
       if(!(mix in before.active)||before.mixId(mix)!==body.mixId)return json({message:'Zmieniło się przypisanie mixu. Odśwież panel i wybierz go ponownie.',status:'rejected'},409);
+      if(control){
+        const state=readProgramState(await read(base,true));
+        let params:Record<string,string>;
+        let expectedNumber='';
+        if(control.kind==='overlay'){
+          if(!(control.channel in state.overlays))return json({message:'Overlay channel is unavailable.',status:'rejected'},409);
+          const current=before.inputs.find(i=>i.number===state.overlays[control.channel]||i.key===state.overlays[control.channel])?.key||'';
+          if(current!==control.expected)return json({message:'Overlay changed. Refresh and try again.',status:'rejected'},409);
+          const source=before.inputs.find(i=>i.key===control.input);
+          if(control.enabled&&!source)return json({message:'Input is unavailable.',status:'rejected'},409);
+          expectedNumber=control.enabled?source!.number:'';
+          params=control.enabled?{Function:`OverlayInput${control.channel}In`,Input:source!.key,Mix:'0'}:{Function:`OverlayInput${control.channel}Out`};
+          if(state.overlays[control.channel]===expectedNumber)return json({status:'confirmed'});
+        }else{
+          if(state.fadeToBlack===null||state.fadeToBlack!==control.expected)return json({message:'FTB state changed. Refresh and try again.',status:'rejected'},409);
+          if(state.fadeToBlack===control.enabled)return json({status:'confirmed'});
+          params={Function:'FadeToBlack'};
+        }
+        sentAt=now();sent=true;
+        await call(base,params);
+        for(let attempt=0;attempt<24;attempt++){
+          const updated=readProgramState(await read(base,true));
+          if(control.kind==='overlay'?updated.overlays[control.channel]===expectedNumber:updated.fadeToBlack===control.enabled)return json({status:'confirmed'});
+          await sleep(250);
+        }
+        return json({status:'uncertain',message:'Command sent; state not confirmed. Check vMix.'},504);
+      }
       const input=before.inputs.find(i=>i.key===body.input);
       if(!input)return json({message:'Ten input nie jest już dostępny w vMix.',status:'rejected'},409);
       if(body.input===body.mixId)return json({message:'Nie można wysłać mixu na niego samego.',status:'rejected'},400);
@@ -78,7 +107,7 @@ export function createVmixService({fetcher=fetch,now=Date.now,sleep=(ms)=>new Pr
       sentAt=now();sent=true; // From this point a timeout has an uncertain result; never retry the command.
       await call(base,{...transition,Input:String(body.input),Mix:String(mix-1)});
       if(body.play&&body.action!=='preview'){try{await call(base,{Function:'Play',Input:String(body.input)});}catch{warning='Źródło przełączono, ale vMix nie potwierdził odtwarzania.';}}
-      const stinger=transition.Function.startsWith('Stinger');
+      const stinger=transition.Function?.startsWith('Stinger');
       // For ordinary effects don't release the mix before the requested duration.
       // Stinger XML confirms the program source, not completion of the animation.
       await sleep(stinger?2000:Number(transition.Duration||0));
@@ -91,7 +120,7 @@ export function createVmixService({fetcher=fetch,now=Date.now,sleep=(ms)=>new Pr
       }
       return json({status:'uncertain',message:'Wysłano polecenie, ale nie potwierdzono docelowego źródła. Sprawdź vMix przed kolejnym kliknięciem.'},504);
     }catch(e){
-      if(sent) await sleep(Math.max(1500,(transition.Function.startsWith('Stinger')?2000:Number(transition.Duration||0))-(now()-sentAt)));
+      if(sent) await sleep(Math.max(1500,(transition.Function?.startsWith('Stinger')?2000:Number(transition.Duration||0))-(now()-sentAt)));
       return json({status:sent?'uncertain':'failed',message:sent?'Wynik polecenia jest niepewny. Sprawdź program w vMix. Polecenie nie zostało ponowione.':`Nie można odczytać vMix. ${e instanceof Error?e.message:''}`},502);
     }finally{if(!instanceConfirmed){instance=undefined;routingAddress=undefined;}cache.delete(base.href);locks.delete(lock);}
   };
@@ -111,17 +140,17 @@ export function createDashboardService(real=createVmixService(),demo=createVmixS
    if(body?.connect===true)return new Response(JSON.stringify({message:'Only the local operator can change the connection.'}),{status:403,headers:{'Content-Type':'application/json'}});
    if(!activeTarget)return new Response(JSON.stringify({message:'Waiting for the local operator to connect.'}),{status:409,headers:{'Content-Type':'application/json'}});
    if(!body)return new Response('Invalid request',{status:400});
-   if(body.input!==undefined&&body.address!==activeTarget)return new Response(JSON.stringify({message:'Connection changed. Refresh the dashboard.'}),{status:409,headers:{'Content-Type':'application/json'}});
+   if((body.input!==undefined||body.control!==undefined)&&body.address!==activeTarget)return new Response(JSON.stringify({message:'Connection changed. Refresh the dashboard.'}),{status:409,headers:{'Content-Type':'application/json'}});
    body={...body,address:activeTarget};request=new Request(request.url,{method:request.method,headers:request.headers,body:JSON.stringify(body)});
   }
   if(body?.address==='demo'){
    const forwarded=new Request(request.url,{method:request.method,headers:request.headers,body:JSON.stringify({...body,address:'127.0.0.1:18088'})});
    const response=await demo(forwarded);
-   if(response.ok&&body.input===undefined&&(body.connect===true||!activeTarget))activeTarget='demo';
+   if(response.ok&&body.input===undefined&&body.control===undefined&&(body.connect===true||!activeTarget))activeTarget='demo';
    return response;
   }
   const response=await real(request);
-  if(response.ok&&body?.input===undefined&&typeof body?.address==='string'&&(body.connect===true||!activeTarget))activeTarget=body.address;
+  if(response.ok&&body?.input===undefined&&body?.control===undefined&&typeof body?.address==='string'&&(body.connect===true||!activeTarget))activeTarget=body.address;
   return response;
  };
 }
