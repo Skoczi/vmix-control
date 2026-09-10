@@ -83,6 +83,7 @@ function Dashboard() {
   const settingsTrigger=useRef<HTMLButtonElement>(null);
   const [stationOpen,setStationOpen]=useState(false);
   const [notice, setNotice] = useState('');
+
   const generation = useRef(0);
   const commandLock = useRef(false);
   const [updated, setUpdated] = useState('');
@@ -118,6 +119,12 @@ function Dashboard() {
   async function shareProfile(){try{const link=new URL(window.location.href);link.hash=`station=${encodeStation(currentStation())}`;setStationLink(link.href);try{await navigator.clipboard.writeText(link.href);setNotice(t("Skopiowano link stanowiska."));}catch{setNotice(t("Zaznacz i skopiuj link z pola stanowiska."));}}catch(e){setError(e instanceof Error?e.message:t("Nie udało się przygotować linku."));}}
 
 
+  const [noticePaused, setNoticePaused] = useState(false);
+  useEffect(() => {
+    if (!notice || busy || error || noticePaused) return;
+    const timer = setTimeout(() => setNotice(''), 4000);
+    return () => clearTimeout(timer);
+  }, [notice, busy, error, noticePaused]);
   useEffect(() => { try { setAddress(localStorage.getItem('vmix-address') || '127.0.0.1:8088'); setSelectedMix(localStorage.getItem('vmix-selected-mix') || 'all'); } catch {} }, []);
   useEffect(()=>{
     if(profileInit.current)return;profileInit.current=true;
@@ -216,9 +223,9 @@ function Dashboard() {
     </section> : <section className={`mix-grid ${mixNumbers.length>5?'many-mixes':''}`} aria-label={t("Dostępne mixy")}>{mixNumbers.map(n => { const available = snapshot && n in snapshot.mixes; const active = snapshot?.inputs.find(i => i.number === snapshot.mixes[n] || i.key === snapshot.mixes[n]); return <div className={`mix-card ${online && available ? 'ready' : ''}`} key={n}><div className="mix-label"><span>MIX {n}</span><span>{n === 1 ? t("GŁÓWNY") : t("DODATKOWY")}</span></div><h2 className="mix-own-name">{mixDisplayName(n)}</h2><div className="mix-name" title={active?.title}>{t("Na programie:")} {active?.title || '—'}</div><small><i/>{!snapshot ? t("Oczekuje na połączenie") : !online ? t("Dane nieaktualne") : available ? 'Program' : t("Niedostępny w vMix")}</small></div>; })}</section>}
 
     <section hidden={singleMode&&director} className="transition-panel" aria-label={t("Przejście")}><div className="quick-effects">{['Cut','Fade'].map(effect => <Button key={effect} variant="outline" aria-pressed={transition === effect} disabled={busy} onClick={() => saveTransition(effect,duration)}>{effect}</Button>)}</div><div className="transition-field"><label htmlFor="transition-effect">{t("Przejście")}</label><NativeSelect id="transition-effect" value={transition} onChange={e => saveTransition(e.target.value, duration)} disabled={busy}>{TRANSITIONS.map(effect => <NativeSelectOption key={effect} value={effect}>{effect.replace(/^Stinger(\d)$/, 'Stinger $1')}</NativeSelectOption>)}</NativeSelect></div><div className="transition-field duration-field"><label htmlFor="transition-duration">{t("Czas")} <span>ms</span></label><Input id="transition-duration" type="number" min={1} max={10000} step={1} value={duration} onChange={e => saveTransition(transition, e.target.value)} disabled={busy || !hasDuration(transition)} aria-invalid={!durationValid} aria-describedby={!durationValid ? "transition-hint" : undefined}/></div><div className="duration-presets">{[250,500,1000].map(ms => <Button key={ms} variant="outline" aria-label={t("{ms} milisekund",{ms:ms})} aria-pressed={hasDuration(transition) && Number(duration) === ms} disabled={busy || !hasDuration(transition)} onClick={() => saveTransition(transition,String(ms))}>{ms}</Button>)}</div>{!durationValid && <p id="transition-hint" role="alert">{t("Podaj czas od 1 do 10000 ms.")}</p>}</section>
-    {(error || busy || notice) && (<div className={`status-slot ${error ? 'has-error' : busy ? 'is-pending' : notice ? 'has-notice' : ''}`}>
+    {(error || busy || notice) && (<div onMouseEnter={() => setNoticePaused(true)} onMouseLeave={() => setNoticePaused(false)} onFocus={() => setNoticePaused(true)} onBlur={() => setNoticePaused(false)} className={`operation-toast ${error ? 'has-error' : busy ? 'is-pending' : notice ? 'has-notice' : ''}`}>
       <div role={error ? 'alert' : 'status'}>{(error?t(error):'') || (busy ? t("Czekam na potwierdzenie z vMix…") : t(notice))}</div>
-      {!busy && <Button variant="ghost" onClick={() => {setError('');setNotice('');}} aria-label={t("Zamknij komunikat")}>{t("Zamknij")}</Button>}
+      {!busy && <Button variant="ghost" onClick={() => {setError('');setNotice('');setNoticePaused(false);}} aria-label={t("Zamknij komunikat")}><X size={14}/></Button>}
     </div>)}
     <section className={`input-panel ${singleMode ? 'single-mix' : ''}`}><div className="section-header"><div><h2>{singleMode ? director?'Switcher':t("Źródła") : t("Matryca źródeł")} <span>{visibleInputs.length} / {snapshot?.inputs.length ?? 0}</span></h2></div><Button variant="outline" disabled={!target || busy || connecting} onClick={() => void refresh(target, generation.current)}><RefreshCw size={16}/>{t("Odśwież")}</Button></div>
     {!!snapshot?.inputs.length&&<div className="source-toolbar"><div className="source-search"><Search size={17}/><Input aria-label={t("Szukaj inputów")} placeholder={t("Szukaj źródła…")} value={query} onChange={e=>setQuery(e.target.value)}/>{query&&<Button variant="ghost" aria-label={t("Wyczyść wyszukiwanie")} onClick={()=>setQuery('')}><X size={15}/></Button>}</div><div className="source-filters"><Button variant="outline" aria-pressed={favoritesOnly} onClick={()=>setFavoritesOnly(!favoritesOnly)}><Star size={15} fill={favoritesOnly?'currentColor':'none'}/>{t("Ulubione")}<span>{layoutInputs.filter(i=>i.favorite).length}</span></Button><NativeSelect aria-label={t("Filtruj grupę")} value={groupFilter===null?'all':`group:${groupFilter}`} onChange={e=>setGroupFilter(e.target.value==='all'?null:e.target.value.slice(6))}><NativeSelectOption value="all">{t("Wszystkie grupy")}</NativeSelectOption>{groupFilter!==null&&!groups.includes(groupFilter)&&<NativeSelectOption value={`group:${groupFilter}`}>{groupFilter}</NativeSelectOption>}{groups.map(g=><NativeSelectOption key={g} value={`group:${g}`}>{g==='Pozostałe'&&!layout.items.some(i=>i.group===g)?t('Pozostałe'):g}</NativeSelectOption>)}</NativeSelect>{filtered&&<Button variant="ghost" onClick={clearFilters}>{t("Wyczyść")}</Button>}</div></div>}

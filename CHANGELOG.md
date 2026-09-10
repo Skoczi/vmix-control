@@ -4,6 +4,13 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.4.2 — Feedback without the takeover
+
+- Move operation feedback to a compact bottom-left toast with a quiet dark background.
+- Dismiss confirmations after four seconds; pause the timer while hovered or focused.
+- Keep errors visible until dismissed and leave the CUT/AUTO side clear.
+
+
 ## 19.4.1 — Let operators straight in
 
 - Remote operators no longer get connection settings on startup or after a failed connection.

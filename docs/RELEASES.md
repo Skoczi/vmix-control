@@ -8,6 +8,7 @@ Read the [changelog](../CHANGELOG.md) for version notes. [SHA-256 checksums and 
 
 | Release | Changes |
 | --- | --- |
+| [v19.4.2](https://github.com/Skoczi/vmix-control/releases/tag/v19.4.2) | Feedback without the takeover |
 | [v19.4.1](https://github.com/Skoczi/vmix-control/releases/tag/v19.4.1) | Let operators straight in |
 | [v19.4](https://github.com/Skoczi/vmix-control/releases/tag/v19.4) | One server. Independent operators. |
 | [v19.3](https://github.com/Skoczi/vmix-control/releases/tag/v19.3) | Less copy around the controls |
