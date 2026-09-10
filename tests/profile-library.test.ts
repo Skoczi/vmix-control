@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {exportLibrary,importLibrary,validateLibrary,uniqueName,filterSources} from '../lib/profile-library.ts';
+import {arrangeSources,DEFAULT_LAYOUT,type Station} from '../lib/stations.ts';
+const p:Station={version:1,name:'Wóz 1',address:'127.0.0.1:8088',mixId:'main',transition:'Cut',duration:500,play:false,layout:DEFAULT_LAYOUT};
+test('profile export round trip preserves settings and resolves collisions',()=>{const result=importLibrary(exportLibrary([p]),[p]);assert.equal(result[1].name,'Wóz 1 (2)');assert.deepEqual(result[1].layout,p.layout);assert.equal(p.name,'Wóz 1');});
+test('import is atomic for invalid profiles and capacity overflow',()=>{const existing=[p];assert.throws(()=>importLibrary(JSON.stringify({format:'vmix-control-profiles',version:1,profiles:[p,{...p,name:'Other',address:'https://example.com'}]}),existing));assert.equal(existing.length,1);assert.throws(()=>importLibrary(exportLibrary([p]),Array.from({length:30},(_,i)=>({...p,name:String(i)}))));assert.throws(()=>importLibrary('{}',[]));});
+test('rename rejects duplicates and blank names; copy names remain bounded',()=>{assert.throws(()=>validateLibrary([p,{...p}]));assert.throws(()=>validateLibrary([{...p,name:' '} ]));const name='a'.repeat(80);assert.equal(uniqueName(name,[{...p,name}]).length,80);});
+test('search handles Polish letters and favorite keeps its original group',()=>{const sources=arrangeSources([{key:'a',title:'Łódź WÓZ',number:'1',type:'Capture'},{key:'b',title:'Kamera',number:'2',type:'Capture'}],{...DEFAULT_LAYOUT,items:[{key:'a',visible:true,favorite:true,group:'Kamery'}]});assert.equal(sources[0].stationGroup,'Ulubione');assert.equal(filterSources(sources,'lodz woz','Kamery',true).length,1);assert.equal(filterSources(sources,'kamera','Kamery',true).length,0);assert.equal(filterSources(sources,'',null,false).length,2);});

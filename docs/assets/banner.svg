@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-label="vMix Control — Local control. Shared production.">
+<rect width="1280" height="360" rx="18" fill="#10181e"/><path d="M0 359H1280" stroke="#334550"/><rect x="54" y="52" width="38" height="5" rx="2" fill="#b5ed72"/>
+<text x="54" y="122" fill="#e6eef3" font-family="Arial,Helvetica,sans-serif" font-size="52" font-weight="700" letter-spacing="-2">vMix <tspan font-weight="400" fill="#9bafbd">Control</tspan></text>
+<text x="56" y="174" fill="#bbcbd5" font-family="Arial,Helvetica,sans-serif" font-size="24">Local control. Shared production.</text>
+<text x="56" y="236" fill="#849bab" font-family="Arial,Helvetica,sans-serif" font-size="17">Switcher · Source routing · Operator stations</text>
+<text x="56" y="302" fill="#b5ed72" font-family="Arial,Helvetica,sans-serif" font-size="13" letter-spacing="2">SKOCZI.DEV</text>
+<g transform="translate(765 46)" font-family="Arial,Helvetica,sans-serif"><rect width="460" height="266" rx="14" fill="#162229" stroke="#334550"/><text x="25" y="36" fill="#8fa6b5" font-size="11" letter-spacing="2">CONTROL BUSES</text>
+<g fill="#23323d"><rect x="24" y="57" width="412" height="38" rx="7"/><rect x="24" y="107" width="412" height="38" rx="7"/><rect x="24" y="157" width="412" height="38" rx="7"/><rect x="24" y="207" width="412" height="38" rx="7"/></g>
+<g fill="#d2dfe7" font-size="13"><text x="40" y="81">PGM</text><text x="40" y="131">AUX 1</text><text x="40" y="181">AUX 2</text><text x="40" y="231">AUX 3</text></g>
+<g fill="#415563"><circle cx="205" cy="76" r="5"/><circle cx="265" cy="76" r="5"/><circle cx="325" cy="76" r="5"/><circle cx="385" cy="76" r="5"/><circle cx="205" cy="126" r="5"/><circle cx="265" cy="126" r="5"/><circle cx="325" cy="126" r="5"/><circle cx="385" cy="126" r="5"/><circle cx="205" cy="176" r="5"/><circle cx="265" cy="176" r="5"/><circle cx="325" cy="176" r="5"/><circle cx="385" cy="176" r="5"/><circle cx="205" cy="226" r="5"/><circle cx="265" cy="226" r="5"/><circle cx="325" cy="226" r="5"/><circle cx="385" cy="226" r="5"/></g>
+<g fill="#b5ed72"><circle cx="205" cy="76" r="6"/><circle cx="325" cy="126" r="6"/><circle cx="265" cy="176" r="6"/><circle cx="385" cy="226" r="6"/></g></g></svg>

@@ -1,0 +1,8 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {restoreStationSession,selectedProfile} from '../lib/station-session.ts';
+import {encodeStation,type Station} from '../lib/stations.ts';
+const original:Station={version:1,name:'WOZ 1',address:'127.0.0.1:8088',mixId:'main',transition:'Fade',duration:500,play:false,layout:{items:[],showNew:true,size:'normal'}};
+test('profile link imports once; refreshed clean URL restores the newer local draft',()=>{const first=restoreStationSession(`http://localhost:3000/#station=${encodeStation(original)}`,null);assert.equal(first.imported,true);assert.equal(new URL(first.cleanUrl).hash,'');const edited={...first.station!,duration:1000,layout:{...original.layout,size:'large' as const,showNew:false}};const reload=restoreStationSession(first.cleanUrl,JSON.stringify(edited));assert.equal(reload.imported,false);assert.deepEqual(reload.station,edited);});
+test('an explicit new link overrides the local draft and preserves unrelated fragment parameters',()=>{const restored=restoreStationSession(`http://localhost:3000/?mode=operator#tab=one&station=${encodeStation(original)}`,JSON.stringify({...original,duration:1000}));assert.equal(restored.station?.duration,500);assert.equal(new URL(restored.cleanUrl).search,'?mode=operator');assert.equal(new URL(restored.cleanUrl).hash,'#tab=one');});
+test('placeholder and invalid selection never load a profile',()=>{assert.equal(selectedProfile([original],''),undefined);assert.equal(selectedProfile([original],'no'),undefined);assert.equal(selectedProfile([original],'-1'),undefined);assert.equal(selectedProfile([original],'3'),undefined);assert.equal(selectedProfile([original],'0'),original);});

@@ -1,0 +1,258 @@
+[
+  {
+    "tag": "v19.4",
+    "title": "v19.4 · One server. Independent operators.",
+    "file": "vmix-control-windows-v19.4.zip",
+    "sha256": "2915433a2fcff09664897b32cbc5c9c7a8b17daebac50dfe89b603ea1e2fa56f",
+    "bytes": 228521,
+    "archived": false
+  },
+  {
+    "tag": "v19.3",
+    "title": "v19.3 · Less copy around the controls",
+    "file": "vmix-control-windows-v19.3.zip",
+    "sha256": "eefe4b7d3b195535c6cc20bfaeaf6f288c4c4974651a151c3602d3a7eb9a364d",
+    "bytes": 225561,
+    "archived": true
+  },
+  {
+    "tag": "v19.2",
+    "title": "v19.2 · Four characters, minimum",
+    "file": "vmix-control-windows-v19.2.zip",
+    "sha256": "352d9cabaf5d1c58f7ae1567441e57a979c568b28e57e449f8ad586c87501d76",
+    "bytes": 225418,
+    "archived": true
+  },
+  {
+    "tag": "v19.1",
+    "title": "v19.1 · Know which build is running",
+    "file": "vmix-control-windows-v19.1.zip",
+    "sha256": "541267fb853e069c77e72bfeacbe734afce299422f3394756443126fb8bc32bf",
+    "bytes": 225303,
+    "archived": true
+  },
+  {
+    "tag": "v19",
+    "title": "v19 · Password access for the LAN",
+    "file": "vmix-control-windows-v19.zip",
+    "sha256": "e49de5628a7a842e1b75e50bdc517c5ec40450565cf3edd01af1bf5a4f1d16d8",
+    "bytes": 225139,
+    "archived": true
+  },
+  {
+    "tag": "v18.2",
+    "title": "v18.2 · PROGRAM keeps its contrast",
+    "file": "vmix-control-windows-v18.2.zip",
+    "sha256": "677af8a3a53058ac54bac09d6fb3986427d781e7b1c60618991a1e808fd77865",
+    "bytes": 219166,
+    "archived": true
+  },
+  {
+    "tag": "v18.1",
+    "title": "v18.1 · Settings back in line",
+    "file": "vmix-control-windows-v18.1.zip",
+    "sha256": "91c17e4e9555dbbfc77655023f5261c2d9ed1744392d231aad82e7159c51ea57",
+    "bytes": 219115,
+    "archived": true
+  },
+  {
+    "tag": "v18",
+    "title": "v18 · Six tools for the operator",
+    "file": "vmix-control-windows-v18.zip",
+    "sha256": "3cfd10c8386350219583bf1a966add12d95581ef230344afa3caab0b9a335684",
+    "bytes": 219089,
+    "archived": true
+  },
+  {
+    "tag": "v17",
+    "title": "v17 · Tile size where you expect it",
+    "file": "vmix-control-windows-v17.zip",
+    "sha256": "3ba54d51d872093c7c0317b0cb2de256507d0f14cf2f763a32a046766e79cab0",
+    "bytes": 213811,
+    "archived": true
+  },
+  {
+    "tag": "v16.1",
+    "title": "v16.1 · Switcher comes first",
+    "file": "vmix-control-windows-v16.1.zip",
+    "sha256": "c086f8698f895eb414eb1e47cea821bd1eaba6bc2cb8a63d77db4bb90a64dadb",
+    "bytes": 213280,
+    "archived": true
+  },
+  {
+    "tag": "v16",
+    "title": "v16 · More inputs, less scrolling",
+    "file": "vmix-control-windows-v16.zip",
+    "sha256": "ab4b444172643704aa82b0a2c01ec49a005f364b4acff980d550bd96f71e6f59",
+    "bytes": 212890,
+    "archived": true
+  },
+  {
+    "tag": "v15.1",
+    "title": "v15.1 · English names in demo",
+    "file": "vmix-control-windows-v15.1.zip",
+    "sha256": "cd61094d61cbc204b38196caef17487e5c3a2dfddc1adc9827d021c685775a6f",
+    "bytes": 211457,
+    "archived": true
+  },
+  {
+    "tag": "v15",
+    "title": "v15 · Settings get their own space",
+    "file": "vmix-control-windows-v15.zip",
+    "sha256": "acd2ab3d97f9c0516d3e90c464915d846c3becc0d662cfc0802cf5914d1a0b8f",
+    "bytes": 211485,
+    "archived": true
+  },
+  {
+    "tag": "v14",
+    "title": "v14 · Ten interface languages",
+    "file": "vmix-control-windows-v14.zip",
+    "sha256": "e2ca190930d0c6660cb3534e0ecee7568b4f6c189e3f856232ad84034d50b81b",
+    "bytes": 207490,
+    "archived": true
+  },
+  {
+    "tag": "v13.2",
+    "title": "v13.2 · A mix picker that scales",
+    "file": "vmix-control-windows-v13.2.zip",
+    "sha256": "a893c5038141bca4b6919b61977fb65787a61621cf9a7ebfe45775e4ca316ad5",
+    "bytes": 188140,
+    "archived": true
+  },
+  {
+    "tag": "v13.1",
+    "title": "v13.1 · PGM and AUX in demo",
+    "file": "vmix-control-windows-v13.1.zip",
+    "sha256": "78c41ef5d949a77bfa0b105b5c42d58b7402ae692b868e1bcdb2a43d5c3c44c4",
+    "bytes": 138698,
+    "archived": true
+  },
+  {
+    "tag": "v13",
+    "title": "v13 · The full mix range",
+    "file": "vmix-control-windows-v13.zip",
+    "sha256": "3bfc9c52110ae274e22625301f79a6c1fc0f3e1353c7ddd32cfbd55a706baf03",
+    "bytes": 138685,
+    "archived": true
+  },
+  {
+    "tag": "v12.1",
+    "title": "v12.1 · A calmer switcher desk",
+    "file": "vmix-control-windows-v12.1.zip",
+    "sha256": "e71f91c4153c57e31d8b9b7b2024afdf385ec80ca445965e98b89efaeb336390",
+    "bytes": 137780,
+    "archived": true
+  },
+  {
+    "tag": "v12",
+    "title": "v12 · A dedicated director view",
+    "file": "vmix-control-windows-v12.zip",
+    "sha256": "3defb71af105595f965a047dad7daf3afa766d696024a19e34c229d57f51b73a",
+    "bytes": 137650,
+    "archived": true
+  },
+  {
+    "tag": "v11.2",
+    "title": "v11.2 · Demo styles in place",
+    "file": "vmix-control-windows-v11.2.zip",
+    "sha256": "875ed2a39a86d3309153eb2da3a2cee57e5142058895c586f640994126e5d2bb",
+    "bytes": 134346,
+    "archived": true
+  },
+  {
+    "tag": "v11.1",
+    "title": "v11.1 · Demo actually starts",
+    "file": "vmix-control-windows-v11.1.zip",
+    "sha256": "932c7abb65d2a30c21378c7566cc4c592d33769f5c40480ea91f1a71277dd8f9",
+    "bytes": 134345,
+    "archived": true
+  },
+  {
+    "tag": "v11",
+    "title": "v11 · Try it without vMix",
+    "file": "vmix-control-windows-v11.zip",
+    "sha256": "efa41530ffe671a4c86bac70ec7354f9661664cf3d631eaff454b58d68a28c70",
+    "bytes": 134282,
+    "archived": true
+  },
+  {
+    "tag": "v10",
+    "title": "v10 · Find sources. Keep your setup.",
+    "file": "vmix-control-windows-v10.zip",
+    "sha256": "43fae52c6a18debb42ec8826572a7d50b3e58ea0b1a9c5d149d286e7717fd307",
+    "bytes": 132203,
+    "archived": true
+  },
+  {
+    "tag": "v9",
+    "title": "v9 · Shared control, shared locks",
+    "file": "vmix-control-windows-v9.zip",
+    "sha256": "c56130ba191f24ecf9e2ba385a1563904a7fdeee848fc54470a5c89306a77168",
+    "bytes": 129188,
+    "archived": true
+  },
+  {
+    "tag": "v8",
+    "title": "v8 · Less text around the work",
+    "file": "vmix-control-windows-v8.zip",
+    "sha256": "3b5d3ee9698a512d9bb1e64ad69f4cd22e82b21541c00a18f392741186976858",
+    "bytes": 128142,
+    "archived": true
+  },
+  {
+    "tag": "v7",
+    "title": "v7 · The matrix lines up",
+    "file": "vmix-control-windows-v7.zip",
+    "sha256": "6b3e133e6fd8b0212253c0d2c24978bfa7a981ce605f018318b9b69596ca4499",
+    "bytes": 128487,
+    "archived": true
+  },
+  {
+    "tag": "v6",
+    "title": "v6 · Your station, your layout",
+    "file": "vmix-control-windows-v6.zip",
+    "sha256": "8e4866be37471d7c0196df66dbe6f740955fb638018502b53a6bfcc8015ab6ce",
+    "bytes": 126680,
+    "archived": true
+  },
+  {
+    "tag": "v5",
+    "title": "v5 · Confirm the switch",
+    "file": "vmix-control-windows-v5.zip",
+    "sha256": "dc1a8484eb501bade3543587762de5106c775d5d4cbf55e4862d6262cfdaa9b3",
+    "bytes": 122645,
+    "archived": true
+  },
+  {
+    "tag": "v4",
+    "title": "v4 · Beyond CUT",
+    "file": "vmix-control-windows-v4.zip",
+    "sha256": "1d5119eb8f37faa11e2a1b4f1a8b67d3d770e3be55351fac11b4af1dbdf8e154",
+    "bytes": 118939,
+    "archived": true
+  },
+  {
+    "tag": "v3",
+    "title": "v3 · One mix, its own view",
+    "file": "vmix-control-windows-v3.zip",
+    "sha256": "b11a2158875902bc450174588e80219b8e51dd41853630ccc5b6aef01c2130e9",
+    "bytes": 117412,
+    "archived": true
+  },
+  {
+    "tag": "v2",
+    "title": "v2 · Each operator picks a mix",
+    "file": "vmix-control-windows-v2.zip",
+    "sha256": "d8c0c9a8a0602fc9eba85d272064466f31a2d20b1cb7bd20ac31e44745b038d0",
+    "bytes": 115126,
+    "archived": true
+  },
+  {
+    "tag": "archive-initial",
+    "title": "archive-initial · The first preserved source snapshot",
+    "file": "vmix-control.zip",
+    "sha256": "f1bdda45a535b625e7d47f4306d21bae0a3a07554bc7ee2e39fe6da1127a6bcf",
+    "bytes": 169243,
+    "archived": true
+  }
+]
