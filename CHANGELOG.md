@@ -4,6 +4,11 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.7.2 — Same desk, every view
+
+- Use the same page width for All mixes, Sources and Switcher.
+- Reserve scrollbar space so switching views keeps the dashboard edges steady.
+
 ## 19.7.1 — A sidebar that fits
 
 - Match desktop transition-panel height to the source banks.

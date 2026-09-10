@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.7.2",
+    "title": "v19.7.2 · Same desk, every view",
+    "file": "vmix-control-windows-v19.7.2.zip",
+    "sha256": "a589785c6646c99ad5292456fe4fb502791e2a5822af67a161a278b7bb8ed261",
+    "bytes": 248865,
+    "archived": false
+  },
+  {
     "tag": "v19.7.1",
     "title": "v19.7.1 · A sidebar that fits",
     "file": "vmix-control-windows-v19.7.1.zip",
     "sha256": "75991e6fed7ad4913fd5be5a90c00d4f4f7d63be67ecf7d91e8f86434af7d44a",
     "bytes": 248868,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.7",
