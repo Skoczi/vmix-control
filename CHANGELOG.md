@@ -4,6 +4,15 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.6.1 — Refresh without a crowd
+
+- Keep the operator identity in browser session storage across reloads and remounts.
+- Update the existing presence record when the operator changes mix.
+- Existing ghost entries expire through the presence timeout.
+
+Validated with 100 reloads using one session and a separate second operator.
+
+
 ## 19.6 — Production controls reach AUX
 
 - Stinger selectors and overlay IN/OUT are available on additional mixes in vMix 28+, and demo.

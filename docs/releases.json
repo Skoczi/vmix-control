@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.6.1",
+    "title": "v19.6.1 · Refresh without a crowd",
+    "file": "vmix-control-windows-v19.6.1.zip",
+    "sha256": "a627052be5332eee3559851fe370d9b76f24ed1f78e0ae0e00d49c48bf5cbae2",
+    "bytes": 232695,
+    "archived": false
+  },
+  {
     "tag": "v19.6",
     "title": "v19.6 · Production controls reach AUX",
     "file": "vmix-control-windows-v19.6.zip",
     "sha256": "c80ad9723f8d0e499300d416c7ded9c451a8d0bd6272dbba4583280f904aae20",
     "bytes": 232575,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.5",
