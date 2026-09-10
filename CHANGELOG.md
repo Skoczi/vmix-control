@@ -4,6 +4,15 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.6.2 — One browser, one operator
+
+- Share the operator identity across tabs at the same dashboard origin.
+- Reuse the previous tab identity when migrating the first tab.
+- Re-read the shared identity on every heartbeat so updated tabs converge.
+
+Refresh all open dashboard tabs once. Old entries expire after their final heartbeat. Different browser profiles and dashboard addresses retain separate identities. With multiple active tabs, the most recent heartbeat determines the browser's displayed mix.
+
+
 ## 19.6.1 — Refresh without a crowd
 
 - Keep the operator identity in browser session storage across reloads and remounts.

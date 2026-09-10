@@ -19,7 +19,15 @@ test('100 reloads reuse one presence record; another session remains separate',a
  assert.notEqual(result.operators[0].id,result.operators[1].id);
 });
 test('malformed stored identity is replaced once',()=>{
- const storage=store();storage.setItem('vmix-operator-session-v1','bad');
+ const storage=store();storage.setItem('vmix-operator-browser-v2','bad');
  assert.equal(operatorIdentity(storage,()=> 'a'.repeat(32)),'a'.repeat(32));
  assert.equal(operatorIdentity(storage,()=>{throw Error('must reuse');}),'a'.repeat(32));
+});
+
+test('tabs sharing browser storage have one identity while a different browser stays distinct',()=>{
+ const browser=store(),another=store();
+ const firstTab=operatorIdentity(browser,()=> 'a'.repeat(32));
+ const secondTab=operatorIdentity(browser,()=> 'b'.repeat(32));
+ assert.equal(firstTab,secondTab);
+ assert.notEqual(operatorIdentity(another,()=> 'c'.repeat(32)),firstTab);
 });
