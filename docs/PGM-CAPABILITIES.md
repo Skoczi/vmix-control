@@ -4,11 +4,11 @@ Documentation review: 11 September 2026. Reference version: vMix 29. Availabilit
 
 ## What belongs where
 
-| Area | Available controls | Dashboard 19.5 |
+| Area | Available controls | Dashboard 19.6 |
 | --- | --- | --- |
 | Switching | Preview, Cut, Fade, Wipe, Zoom, other transition effects | Available |
-| Stingers | Animation transitions using configured channels | Existing AUTO support; dedicated PGM selectors added |
-| Overlays | Fullscreen or PiP source composition | PGM IN/OUT added; available channels come from XML |
+| Stingers | Animation transitions using configured channels | Existing AUTO support; dedicated selectors on PGM and supported AUX mixes |
+| Overlays | Fullscreen or PiP source composition | PGM and AUX IN/OUT added; available channels come from XML |
 | FTB | Fade output destinations to black and restore | Added with explicit activation and state feedback |
 | T-Bar | Manual Preview-to-Output transition | Documented; not implemented |
 | Audio | Master, A–G, level, mute, solo, follow | Separate mixer recommended |
@@ -48,3 +48,7 @@ The visual structure should stay consistent: the two source banks remain central
 ## Validation limits
 
 The new overlay and FTB commands are covered by simulated transport tests, including stale state, shared locks, all eight overlay channels and uncertain delivery. Demo has shared overlay/FTB state, but no rendered video. Physical vMix and mobile visual verification are still required before calling the integration production-validated.
+
+## 19.6 update
+
+The production tray is available on additional mixes for vMix 28+ and demo. IN targets the selected mix; OUT clears the global channel. Channel state is global: ON does not prove visibility on the selected mix. The dashboard permits sending an already-active source to a new target. FTB remains exclusive to PGM.

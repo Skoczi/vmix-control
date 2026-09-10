@@ -10,7 +10,7 @@ import {AccessGate,useAccess} from '@/components/access-control';
 import {SettingsDialog} from '@/components/settings-dialog';
 import {MixPicker} from '@/components/mix-picker';
 import {ProgramPanel} from '@/components/program-panel';
-import {readProgramState,type ProgramControl} from '@/lib/program-controls';
+import {readProgramState,supportsAuxEffects,type ProgramControl} from '@/lib/program-controls';
 import {DirectorPanel} from '@/components/director-panel';
 
 import {filterSources,validateLibrary} from '@/lib/profile-library';
@@ -164,11 +164,11 @@ function Dashboard() {
     return text;
   }
   async function programControl(control:ProgramControl){
-    if(commandLock.current||!online||!singleMode||focusedMix!==1||!snapshot)return;
+    if(commandLock.current||!online||!singleMode||!snapshot||(control.kind==='ftb'&&focusedMix!==1))return;
     const host=target,gen=generation.current;
     commandLock.current=true;setBusy(true);setError('');setNotice('');
     try{
-      await api(host,{control,mix:1,mixId:'main',play:false,transition:'Cut',duration:0});
+      await api(host,{control,mix:focusedMix,mixId:snapshot.mixInfo[focusedMix].id,play:false,transition:'Cut',duration:0});
       if(gen===generation.current)setNotice(control.kind==='overlay'?`Overlay ${control.channel} · ${control.enabled?'IN':'OUT'} · ${t('potwierdzono')}`:`FTB · ${control.enabled?'ON':'OFF'} · ${t('potwierdzono')}`);
     }catch(e){if(gen===generation.current)setError(e instanceof Error?e.message:'Command failed.');}
     finally{await refresh(host,gen);commandLock.current=false;setBusy(false);}
@@ -258,7 +258,7 @@ function Dashboard() {
     </div> : <Table className={`routing-matrix ${mixNumbers.length>5?'wide-matrix':''}`} style={{minWidth:Math.max(720,280+mixNumbers.length*144)}}><colgroup><col style={{width:mixNumbers.length>5?'280px':mixNumbers.length ? '32%' : '100%'}}/>{mixNumbers.map(n=><col key={n} style={{width:mixNumbers.length>5?'144px':`${68/mixNumbers.length}%`}}/>)}</colgroup><TableHeader><TableRow><TableHead className="source-heading"><div className="matrix-heading"><span className="matrix-label">{t("ŹRÓDŁO")}</span><span className="matrix-subtitle">{t("Dostępne inputy")}</span></div></TableHead>{mixNumbers.map(n => <TableHead key={n}><div className="matrix-heading" title={mixTitle(n)}><span className="matrix-label"><i/>MIX {String(n).padStart(2,'0')}</span><span className="matrix-subtitle">{mixDisplayName(n)}</span></div></TableHead>)}</TableRow></TableHeader><TableBody>{visibleInputs.map(input => <TableRow key={input.key}><TableCell><div className="source"><span className="source-number">{input.number.padStart(2, '0')}</span><div><strong>{input.title}</strong><p>{input.type} <span>· {input.state === 'Running' ? t("Odtwarzanie") : input.state === 'Paused' ? t("Wstrzymany") : input.state}</span></p></div></div></TableCell>{mixNumbers.map(n => { const active = snapshot.mixes[n] === input.number || snapshot.mixes[n] === input.key; return <TableCell key={n}><Button className={`route-button ${active && online ? 'active' : ''}`} variant="outline" disabled={!online || busy || !durationValid || !(n in snapshot.mixes) || !input.key || input.key === snapshot.mixInfo[n]?.id} onClick={() => void route(input, n)} aria-label={t("{source} na {mix}",{source:input.title,mix:mixTitle(n)})}><span>{input.key === snapshot.mixInfo[n]?.id ? '—' : active && online ? 'PROGRAM' : t("Przełącz")}</span>{active && online ? <i/> : <ArrowUpRight size={16}/>}</Button></TableCell>; })}</TableRow>)}</TableBody></Table> : <Empty className="empty-inputs"><Monitor size={34}/><EmptyTitle>{online ? t("Brak inputów") : t(canConfigure?"Połącz się ze swoim vMix":"Waiting for the local operator to connect.")}</EmptyTitle><EmptyDescription>{online ? t("Dodaj inputy w vMix. Pojawią się tutaj automatycznie.") : (canConfigure?t("Wpisz adres komputera powyżej. Inputy i dostępne mixy zostaną pobrane automatycznie."):null)}</EmptyDescription></Empty>}
 
     </section>
-    {singleMode&&focusedMix===1&&director&&snapshot?.program&&<ProgramPanel state={snapshot.program} inputs={snapshot.inputs} locked={busy||connecting} online={online} transition={transition} stingers={Object.keys(snapshot.program.overlays).length<=1?0:snapshot.version==='DEMO'||Number.parseInt(snapshot.version)>=29?8:Math.min(4,Object.keys(snapshot.program.overlays).length)} onStinger={effect=>saveTransition(effect,duration)} onControl={control=>void programControl(control)}/>}
+    {singleMode&&director&&snapshot?.program&&(focusedMix===1||supportsAuxEffects(snapshot.version))&&<ProgramPanel key={snapshot.mixInfo[focusedMix].id} mix={focusedMix} mixName={mixDisplayName(focusedMix)} mixId={snapshot.mixInfo[focusedMix].id} state={snapshot.program} inputs={snapshot.inputs} locked={busy||connecting} online={online} transition={transition} stingers={Object.keys(snapshot.program.overlays).length<=1?0:snapshot.version==='DEMO'||Number.parseInt(snapshot.version)>=29?8:Math.min(4,Object.keys(snapshot.program.overlays).length)} onStinger={effect=>saveTransition(effect,duration)} onControl={control=>void programControl(control)}/>}
     <footer className="site-footer">© 2026 | <a href="https://skoczi.dev" target="_blank" rel="noopener noreferrer">Skoczi.dev</a><span className="footer-version"> · v{APP_VERSION}</span></footer>
   </main>;
 }

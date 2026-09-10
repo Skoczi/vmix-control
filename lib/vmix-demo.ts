@@ -23,7 +23,7 @@ export function createDemoFetcher(now:()=>number=Date.now,mixCount=MAX_MIXES):ty
   if(fn){
    if(fn==='FadeToBlack'){fadeToBlack=!fadeToBlack;return new Response('OK');}
    const overlay=fn.match(/^OverlayInput([1-8])(In|Out)$/);
-   if(overlay){const n=Number(overlay[1]);if(overlay[2]==='Out'){overlays[n]='';return new Response('OK');}const source=inputs.find(i=>i.key===url.searchParams.get('Input'));if(!source)return new Response('Unknown input',{status:400});overlays[n]=source.number;return new Response('OK');}
+   if(overlay){const n=Number(overlay[1]);if(overlay[2]==='Out'){overlays[n]='';return new Response('OK');}const mix=Number(url.searchParams.get('Mix')||'0');if(!(mix in active))return new Response('Invalid mix',{status:400});const source=inputs.find(i=>i.key===url.searchParams.get('Input'));if(!source||source.key===`demo-mix-${mix+1}`)return new Response('Unknown input',{status:400});overlays[n]=source.number;return new Response('OK');}
 
    const input=inputs.find(i=>i.key===url.searchParams.get('Input')||i.number===url.searchParams.get('Input'));
    if(!input)return new Response('Unknown input',{status:400});

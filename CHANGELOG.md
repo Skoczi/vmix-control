@@ -4,6 +4,17 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.6 — Production controls reach AUX
+
+- Stinger selectors and overlay IN/OUT are available on additional mixes in vMix 28+, and demo.
+- Overlay IN targets the selected mix, including when the same source is already active on the shared channel.
+- FTB and global production indicators remain in PGM.
+- Shared overlay and stinger channels serialize dashboard commands across mixes.
+- Self-routing and stale mix identities are rejected.
+
+Overlay indicators show global channel state. OUT clears the shared channel across mixes.
+
+
 ## 19.5 — PGM gets a production tray
 
 - Dedicated stinger selectors in the main Switcher. Select a slot, then AUTO.

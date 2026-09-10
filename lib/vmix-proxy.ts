@@ -1,4 +1,4 @@
-import {readProgramState,validateProgramControl,type ProgramControl} from './program-controls.ts';
+import {readProgramState,supportsAuxEffects,validateProgramControl,type ProgramControl} from './program-controls.ts';
 import {isLocalRequest} from './local-access.ts';
 import {validMixNumber} from './vmix-limits.ts';
 import {createDemoFetcher} from './vmix-demo.ts';
@@ -54,7 +54,7 @@ export function createVmixService({fetcher=fetch,now=Date.now,sleep=(ms)=>new Pr
     try {
       const raw=await request.text();if(raw.length>4096)throw new Error('Zbyt duże żądanie.');
       body=JSON.parse(raw);base=vmixUrl(body.address);
-      if(body.control!==undefined){control=validateProgramControl(body.control);if(body.mix!==1||body.mixId!=='main'||body.input!==undefined||body.action!==undefined)throw Error('Program controls require PGM.');}
+      if(body.control!==undefined){control=validateProgramControl(body.control);if(typeof body.mix!=='number'||!validMixNumber(body.mix)||typeof body.mixId!=='string'||!body.mixId||body.input!==undefined||body.action!==undefined||(control.kind==='ftb'&&(body.mix!==1||body.mixId!=='main')))throw Error('Invalid control destination. FTB requires PGM.');}
       if(body.action!==undefined&&!['preview','take','route','back'].includes(String(body.action)))throw new Error('Nieprawidłowa operacja.');
       if(body.input!==undefined){
         if(typeof body.input!=='string'||!/^[a-zA-Z0-9-]{1,80}$/.test(body.input)||typeof body.mix!=='number'||!validMixNumber(body.mix)||typeof body.play!=='boolean'||typeof body.mixId!=='string'||!body.mixId)throw new Error('Nieprawidłowy input lub identyfikator mixu. Odśwież panel.');
@@ -66,14 +66,17 @@ export function createVmixService({fetcher=fetch,now=Date.now,sleep=(ms)=>new Pr
     instance ??= identity; routingAddress ??= base.href; base=new URL(routingAddress);
     if(body.input===undefined&&!control){try{const xml=await read(base);instanceConfirmed=true;return new Response(xml,{headers:{'Content-Type':'application/xml','Cache-Control':'no-store'}});}catch(e){if(!instanceConfirmed){instance=undefined;routingAddress=undefined;}return new Response(e instanceof Error?e.message:'Brak połączenia z vMix.',{status:502});}}
     const mix=Number(body.mix); const lock=`instance|${mix}`;
-    if(locks.has(lock))return json({message:'Ten mix wykonuje polecenie innego operatora. Poczekaj na zakończenie.',status:'busy'},409);
-    locks.add(lock);
+    const operationLocks=[lock,...(control?.kind==='overlay'?[`overlay|${control.channel}`]:transition.Function?.startsWith('Stinger')?[`stinger|${transition.Function}`]:[])];
+    if(operationLocks.some(key=>locks.has(key)))return json({message:'Ten mix wykonuje polecenie innego operatora. Poczekaj na zakończenie.',status:'busy'},409);
+    operationLocks.forEach(key=>locks.add(key));
     let sent=false;let warning='';let sentAt=0;
     try {
       const before=readVmixState(await read(base,true));instanceConfirmed=true;
       if(!(mix in before.active)||before.mixId(mix)!==body.mixId)return json({message:'Zmieniło się przypisanie mixu. Odśwież panel i wybierz go ponownie.',status:'rejected'},409);
       if(control){
-        const state=readProgramState(await read(base,true));
+        const controlXml=await read(base,true);
+        const state=readProgramState(controlXml);
+        if(mix!==1&&!supportsAuxEffects(controlXml.match(/<version>([^<]+)<\/version>/)?.[1]||''))return json({message:'Additional mix effects require vMix 28 or newer.',status:'rejected'},409);
         let params:Record<string,string>;
         let expectedNumber='';
         if(control.kind==='overlay'){
@@ -81,10 +84,11 @@ export function createVmixService({fetcher=fetch,now=Date.now,sleep=(ms)=>new Pr
           const current=before.inputs.find(i=>i.number===state.overlays[control.channel]||i.key===state.overlays[control.channel])?.key||'';
           if(current!==control.expected)return json({message:'Overlay changed. Refresh and try again.',status:'rejected'},409);
           const source=before.inputs.find(i=>i.key===control.input);
+          if(control.enabled&&source?.key===body.mixId)return json({message:'Cannot overlay a mix onto itself.',status:'rejected'},400);
           if(control.enabled&&!source)return json({message:'Input is unavailable.',status:'rejected'},409);
           expectedNumber=control.enabled?source!.number:'';
-          params=control.enabled?{Function:`OverlayInput${control.channel}In`,Input:source!.key,Mix:'0'}:{Function:`OverlayInput${control.channel}Out`};
-          if(state.overlays[control.channel]===expectedNumber)return json({status:'confirmed'});
+          params=control.enabled?{Function:`OverlayInput${control.channel}In`,Input:source!.key,Mix:String(mix-1)}:{Function:`OverlayInput${control.channel}Out`};
+          if(!control.enabled&&state.overlays[control.channel]===expectedNumber)return json({status:'confirmed'});
         }else{
           if(state.fadeToBlack===null||state.fadeToBlack!==control.expected)return json({message:'FTB state changed. Refresh and try again.',status:'rejected'},409);
           if(state.fadeToBlack===control.enabled)return json({status:'confirmed'});
@@ -122,7 +126,7 @@ export function createVmixService({fetcher=fetch,now=Date.now,sleep=(ms)=>new Pr
     }catch(e){
       if(sent) await sleep(Math.max(1500,(transition.Function?.startsWith('Stinger')?2000:Number(transition.Duration||0))-(now()-sentAt)));
       return json({status:sent?'uncertain':'failed',message:sent?'Wynik polecenia jest niepewny. Sprawdź program w vMix. Polecenie nie zostało ponowione.':`Nie można odczytać vMix. ${e instanceof Error?e.message:''}`},502);
-    }finally{if(!instanceConfirmed){instance=undefined;routingAddress=undefined;}cache.delete(base.href);locks.delete(lock);}
+    }finally{if(!instanceConfirmed){instance=undefined;routingAddress=undefined;}cache.delete(base.href);operationLocks.forEach(key=>locks.delete(key));}
   };
 }
 export function createDashboardService(real=createVmixService(),demo=createVmixService({fetcher:createDemoFetcher()}),canConfigure:(request:Request)=>boolean=()=>true) {

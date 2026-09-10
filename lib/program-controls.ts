@@ -18,3 +18,5 @@ export function validateProgramControl(value:unknown):ProgramControl {
  if(c.kind==='overlay'&&Number.isInteger(c.channel)&&Number(c.channel)>=1&&Number(c.channel)<=8&&typeof c.expected==='string'&&/^[\w-]{0,80}$/.test(c.expected)&&(!c.enabled||(typeof c.input==='string'&&/^[\w-]{1,80}$/.test(c.input))))return c as ProgramControl;
  throw Error('Invalid program control.');
 }
+
+export function supportsAuxEffects(version:string){return version==='DEMO'||Number.parseInt(version,10)>=28;}

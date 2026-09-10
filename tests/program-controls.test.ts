@@ -78,3 +78,36 @@ test('overlay controls share PGM lock with transitions and reject stale shared t
  const stale=new Request('http://localhost:3000/api/vmix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({address:'127.0.0.1:8088',mix:1,mixId:'main',control:{kind:'ftb',enabled:true,expected:false}})});
  assert.equal((await shared(stale)).status,409);
 });
+test('all additional mixes route overlays to their own zero-based destination and reuse active channels',async()=>{
+ const f=fixture();
+ for(let mix=2;mix<=16;mix++){
+  const expected=mix===2?'':'demo-title-1';
+  const response=await f.control({kind:'overlay',channel:2,enabled:true,input:'demo-title-1',expected},{mix,mixId:`demo-mix-${mix}`});
+  assert.equal(response.status,200);
+  assert.equal(f.commands.at(-1)!.searchParams.get('Mix'),String(mix-1));
+  assert.equal(f.commands.at(-1)!.searchParams.get('Function'),'OverlayInput2In');
+ }
+ assert.equal(f.commands.length,15);
+ assert.equal((await f.control({kind:'overlay',channel:2,enabled:false,expected:'demo-title-1'},{mix:16,mixId:'demo-mix-16'})).status,200);
+ assert.equal(f.commands.at(-1)!.searchParams.get('Mix'),null);
+ assert.equal(readProgramState(await f.read()).overlays[2],'');
+});
+test('additional mix overlay rejects self-routing, stale mix identity and unsupported versions',async()=>{
+ const f=fixture();
+ assert.equal((await f.control({kind:'overlay',channel:1,enabled:true,input:'demo-mix-2',expected:''},{mix:2,mixId:'demo-mix-2'})).status,400);
+ assert.equal((await f.control({kind:'overlay',channel:1,enabled:true,input:'demo-title-1',expected:''},{mix:2,mixId:'stale'})).status,409);
+ assert.equal(f.commands.length,0);
+ const demo=createDemoFetcher();
+ let commands=0;
+ const service=createVmixService({fetcher:(async(url,options)=>{if(new URL(String(url)).searchParams.has('Function'))commands++;const response=await demo(url,options);return new Response((await response.text()).replace('<version>DEMO</version>','<version>23.0.0.0</version>'));}) as typeof fetch});
+ const response=await service(new Request('http://localhost/api/vmix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({address:'127.0.0.1:8088',mix:2,mixId:'demo-mix-2',control:{kind:'overlay',channel:1,enabled:true,input:'demo-title-1',expected:''}})}));
+ assert.equal(response.status,409);assert.equal(commands,0);
+});
+test('shared overlay lock spans different mixes',async()=>{
+ const demo=createDemoFetcher();let release!:()=>void;let entered!:()=>void;
+ const signal=new Promise<void>(r=>{entered=r;}),wait=new Promise<void>(r=>{release=r;});
+ const service=createVmixService({fetcher:(async(url,options)=>{if(new URL(String(url)).searchParams.get('Function')==='OverlayInput1In'){entered();await wait;}return demo(url,options);}) as typeof fetch,cacheMs:0});
+ const command=(mix:number)=>service(new Request('http://localhost/api/vmix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({address:'127.0.0.1:8088',mix,mixId:`demo-mix-${mix}`,control:{kind:'overlay',channel:1,enabled:true,input:'demo-title-1',expected:''}})}));
+ const first=command(2);await signal;assert.equal((await command(3)).status,409);
+ release();assert.equal((await first).status,200);
+});

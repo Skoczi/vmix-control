@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.6",
+    "title": "v19.6 · Production controls reach AUX",
+    "file": "vmix-control-windows-v19.6.zip",
+    "sha256": "c80ad9723f8d0e499300d416c7ded9c451a8d0bd6272dbba4583280f904aae20",
+    "bytes": 232575,
+    "archived": false
+  },
+  {
     "tag": "v19.5",
     "title": "v19.5 · PGM gets a production tray",
     "file": "vmix-control-windows-v19.5.zip",
     "sha256": "9ac5b3ad4b00f55c2d34b3e2f821d8ebb44a42e9397b725166018a11b5c0adff",
     "bytes": 19340,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.4.2",
