@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.4.1",
+    "title": "v19.4.1 · Let operators straight in",
+    "file": "vmix-control-windows-v19.4.1.zip",
+    "sha256": "b4e00084e95bc02161b3572ab50bb0db8fdeb1f78409d3890f8eed1fa0334cc3",
+    "bytes": 227276,
+    "archived": false
+  },
+  {
     "tag": "v19.4",
     "title": "v19.4 · One server. Independent operators.",
     "file": "vmix-control-windows-v19.4.zip",
     "sha256": "2915433a2fcff09664897b32cbc5c9c7a8b17daebac50dfe89b603ea1e2fa56f",
     "bytes": 228521,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.3",

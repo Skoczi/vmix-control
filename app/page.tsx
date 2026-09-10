@@ -79,7 +79,7 @@ function Dashboard() {
   const [error, setError] = useState('');
   const [connectionError, setConnectionError] = useState('');
   const [pendingInput, setPendingInput] = useState('');
-  const [settingsOpen, setSettingsOpen] = useState(true);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const settingsTrigger=useRef<HTMLButtonElement>(null);
   const [stationOpen,setStationOpen]=useState(false);
   const [notice, setNotice] = useState('');
@@ -124,10 +124,10 @@ function Dashboard() {
     try{const saved=JSON.parse(localStorage.getItem('vmix-stations-v6')||'[]');if(Array.isArray(saved))setProfiles(saved.slice(-30).flatMap(item=>{try{return [validateStation(item)];}catch{return [];}}));const stored=JSON.parse(localStorage.getItem('vmix-layouts-v6')||'{}');const cleaned:Record<string,Layout>={};for(const [key,value] of Object.entries(stored)){try{cleaned[key]=validateStation({version:1,name:'Layout',address:'127.0.0.1:8088',mixId:'all',transition:'Cut',duration:500,play:false,layout:value}).layout;}catch{}}setLayouts(cleaned);}catch{}
     setSettingsOpen(false);
     void (async()=>{
-    let activeAddress:string|null=null;try{const response=await fetch('/api/vmix',{cache:'no-store',signal:AbortSignal.timeout(8000)});if(!response.ok)throw Error();const value=await response.json() as {address:string|null};activeAddress=value.address;}catch{setSettingsOpen(true);setSessionReady(true);return;}
+    let activeAddress:string|null=null;try{const response=await fetch('/api/vmix',{cache:'no-store',signal:AbortSignal.timeout(8000)});if(!response.ok)throw Error();const value=await response.json() as {address:string|null};activeAddress=value.address;}catch{setSettingsOpen(canConfigure);setSessionReady(true);return;}
     let restoredConnection=false;
     try{const restored=restoreStationSession(window.location.href,localStorage.getItem('vmix-last-station-v6'));if(restored.station&&(!activeAddress||restored.station.address===activeAddress)){restoredConnection=true;if(restored.imported){localStorage.setItem('vmix-last-station-v6',JSON.stringify(restored.station));window.history.replaceState(null,'',restored.cleanUrl);}applyProfile(restored.station);}}catch{setError(t("Nie udało się wczytać stanowiska. Wybierz profil lub połącz się ręcznie."));}
-    if(!restoredConnection){if(activeAddress){if(activeAddress!=='demo')setAddress(activeAddress);await connect(activeAddress,false);}else setSettingsOpen(true);}
+    if(!restoredConnection){if(activeAddress){if(activeAddress!=='demo')setAddress(activeAddress);await connect(activeAddress,false);}else setSettingsOpen(canConfigure);}
     setSessionReady(true);
     })();
   },[]);
@@ -180,7 +180,7 @@ function Dashboard() {
     const gen = ++generation.current;
     setDemoMode(host==='demo');setConnecting(true); setTarget(''); setSnapshot(null); setOnline(false); setNotice(''); setError('');
     await refresh(host, gen, announce);
-    if (gen === generation.current) { setTarget(host); setConnecting(false); if(!lastSnapshot.current)setSettingsOpen(true); try { if(host!=='demo')localStorage.setItem('vmix-address', host); } catch {} }
+    if (gen === generation.current) { setTarget(host); setConnecting(false); if(!lastSnapshot.current&&canConfigure&&announce)setSettingsOpen(true); try { if(host!=='demo')localStorage.setItem('vmix-address', host); } catch {} }
   }
   useEffect(()=>{
     if(canConfigure||!sessionReady)return;
@@ -201,7 +201,7 @@ function Dashboard() {
   }
   return <main className={`${singleMode ? 'console-mode' : 'matrix-mode'} tile-size-${tileSize} ${focusMode?'focus-mode':''} ${onAir?'on-air-mode':''}`}>
     <header className="masthead"><div className="brand"><span className="brand-icon"><Radio size={23}/></span><div><h1>vMix <span>Control</span></h1></div></div><div className="header-actions"><Button variant="outline" disabled={onAir} aria-expanded={stationOpen} aria-controls="station-settings" onClick={()=>setStationOpen(!stationOpen)}><Layers size={16}/>{t("Stanowisko")}</Button><Button variant="outline" aria-label={t("Pełny ekran")} onClick={() => { if(document.fullscreenElement) void document.exitFullscreen().catch(() => {}); else void document.documentElement.requestFullscreen().catch(() => setError(t("Pełny ekran jest niedostępny w tej przeglądarce."))); }}><Maximize size={16}/></Button><Button ref={settingsTrigger} disabled={onAir} variant="outline" aria-haspopup="dialog" aria-expanded={settingsOpen} aria-controls="connection-settings" onClick={() => setSettingsOpen(!settingsOpen)}><Settings size={16}/>{t("Ustawienia")}</Button><span className={`connection-status ${online?demoMode?'status-demo':'status-live':connecting?'status-connecting':'status-offline'}`} role="status" aria-label={online?demoMode?t('DEMO · Połączono'):t('Połączono z vMix'):connecting?t('Łączenie…'):t('Brak połączenia')} title={`${online?demoMode?t('DEMO · Połączono'):t('Połączono z vMix'):connecting?t('Łączenie…'):t('Brak połączenia')}${updated?` · ${t('Ostatni odczyt: {time}',{time:updated})}`:''}`}><i aria-hidden="true"/><span aria-hidden="true">{online?demoMode?'DEMO':'VMIX':connecting?'…':'OFFLINE'}</span></span></div></header>
-    <SettingsDialog canConfigure={canConfigure} shortcuts={shortcuts} onShortcuts={changeShortcuts} tileSize={tileSize} onTileSize={changeTileSize} open={settingsOpen} onOpenChange={value=>{if(!onAir)setSettingsOpen(value);}} triggerRef={settingsTrigger} address={address} onAddress={setAddress} play={play} onPlay={setPlay} busy={busy} connecting={connecting} online={online} demo={demoMode} error={connectionError} onConnect={()=>void connect()} onDemo={()=>{selectMix('all');void connect('demo');}}/>
+    <SettingsDialog canConfigure={canConfigure} shortcuts={shortcuts} onShortcuts={changeShortcuts} tileSize={tileSize} onTileSize={changeTileSize} open={settingsOpen} onOpenChange={value=>{if(!value||!onAir)setSettingsOpen(value);}} triggerRef={settingsTrigger} address={address} onAddress={setAddress} play={play} onPlay={setPlay} busy={busy} connecting={connecting} online={online} demo={demoMode} error={connectionError} onConnect={()=>void connect()} onDemo={()=>{selectMix('all');void connect('demo');}}/>
 
     {demoMode&&<div className="demo-banner" role="status"><span><strong>DEMO</strong> {t("Symulacja")}{snapshot ? t(" · {inputs} inputów · {mixes} mixów",{inputs:snapshot.inputs.length,mixes:availableMixNumbers.length}) : ''}</span>{canConfigure&&<Button variant="ghost" disabled={busy||connecting||onAir} onClick={async()=>{try{const response=await fetch('/api/vmix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({disconnect:true})});if(!response.ok)throw Error();}catch{setError(t('Connection changed. Refresh the dashboard.'));return;}generation.current++;setTarget('');setSnapshot(null);setOnline(false);setDemoMode(false);setSettingsOpen(true);selectMix('all');setNotice('');setError('');setConnectionError('');try{localStorage.removeItem('vmix-last-station-v6');}catch{}}}>{t("Zakończ demo")}</Button>}</div>}
     <section className="operator-panel">{singleMode&&<div className="view-switch" aria-label={t("Tryb panelu")}><Button variant="outline" disabled={busy||onAir} aria-pressed={director} onClick={()=>toggleDirector(true)}>Switcher</Button><Button variant="outline" disabled={busy||onAir} aria-pressed={!director} onClick={()=>toggleDirector(false)}>{t("Źródła")}</Button></div>}<MixPicker value={selectedMix} onChange={selectMix} disabled={busy||connecting||onAir} loaded={!!snapshot} mixes={availableMixNumbers.map(n=>({...snapshot!.mixInfo[n],name:mixDisplayName(n),number:n}))}/></section>

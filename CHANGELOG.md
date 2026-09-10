@@ -4,6 +4,13 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.4.1 — Let operators straight in
+
+- Remote operators no longer get connection settings on startup or after a failed connection.
+- Settings can always be closed, including when ON AIR is active.
+- Remote settings focus the close button, with a larger touch target and a header that stays visible while scrolling.
+
+
 ## v19.4 — One server. Independent operators.
 
 - The local operator selects the vMix address or starts demo. LAN clients join the same connection after login, without setting up their own target.
