@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.7",
+    "title": "v19.7 · Overlay keys within reach",
+    "file": "vmix-control-windows-v19.7.zip",
+    "sha256": "396111853490c90699b8178a3346faeeddeb9f0dad142d2e63277bd9447aa39d",
+    "bytes": 233826,
+    "archived": false
+  },
+  {
     "tag": "v19.6.2",
     "title": "v19.6.2 · One browser, one operator",
     "file": "vmix-control-windows-v19.6.2.zip",
     "sha256": "e96686b7ae1f5c016b85c7876365c37ea3ad7fd8c10b210b4f98e20eb7dc1ba5",
     "bytes": 232702,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.6.1",

@@ -20,3 +20,13 @@ export function validateProgramControl(value:unknown):ProgramControl {
 }
 
 export function supportsAuxEffects(version:string){return version==='DEMO'||Number.parseInt(version,10)>=28;}
+
+export function quickOverlayControl(channel:number,active:string,selected:string|undefined,inputs:{key:string;number:string}[],mixId:string):ProgramControl|null{
+ if(!Number.isInteger(channel)||channel<1||channel>8)return null;
+ if(active){
+  const source=inputs.find(i=>i.number===active||i.key===active);
+  return source?{kind:'overlay',channel,enabled:false,expected:source.key}:null;
+ }
+ const source=inputs.find(i=>i.key===selected&&i.key!==mixId);
+ return source?{kind:'overlay',channel,enabled:true,input:source.key,expected:''}:null;
+}

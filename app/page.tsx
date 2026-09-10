@@ -9,6 +9,7 @@ import {APP_VERSION} from '@/lib/version';
 import {AccessGate,useAccess} from '@/components/access-control';
 import {SettingsDialog} from '@/components/settings-dialog';
 import {MixPicker} from '@/components/mix-picker';
+import {OverlayKeys} from '@/components/overlay-keys';
 import {ProgramPanel} from '@/components/program-panel';
 import {readProgramState,supportsAuxEffects,type ProgramControl} from '@/lib/program-controls';
 import {DirectorPanel} from '@/components/director-panel';
@@ -50,6 +51,21 @@ function Dashboard() {
   const availableMixNumbers = visibleMixNumbers(snapshot, 'all');
   const singleMode = selectedMix !== 'all' && mixNumbers.length === 1;
   const focusedMix = mixNumbers[0];
+  const [overlayChoices,setOverlayChoices]=useState<Record<string,Record<number,string>>>({});
+  const overlayScope=JSON.stringify([target,selectedMix]);
+  const overlaySources=overlayChoices[overlayScope]||{};
+  function selectOverlaySource(channel:number,key:string){setOverlayChoices(prev=>({...prev,[overlayScope]:{...prev[overlayScope],[channel]:key}}));}
+  useEffect(()=>{
+    if(!snapshot?.program||!singleMode)return;
+    setOverlayChoices(prev=>{
+      const next={...prev[overlayScope]};let changed=false;
+      for(const [channel,value] of Object.entries(snapshot.program!.overlays)){
+        const source=snapshot.inputs.find(i=>i.number===value||i.key===value);
+        if(source&&!next[Number(channel)]){next[Number(channel)]=source.key;changed=true;}
+      }
+      return changed?{...prev,[overlayScope]:next}:prev;
+    });
+  },[overlayScope,snapshot,singleMode]);
   const programInput = snapshot?.inputs.find(input => input.number === snapshot.mixes[focusedMix] || input.key === snapshot.mixes[focusedMix]);
   const missingSelection = !!snapshot && selectedMix !== 'all' && mixNumbers.length === 0;
   const mixDisplayName=(n:number)=>n===1&&snapshot?.version!=='DEMO'?t('Program główny'):snapshot?.mixInfo[n]?.name||'';
@@ -245,7 +261,7 @@ function Dashboard() {
 
     {!!snapshot?.inputs.length && !layoutInputs.length && <Empty className="empty-inputs"><EmptyTitle>{t("Brak widocznych inputów")}</EmptyTitle><EmptyDescription>{t("Otwórz „Stanowisko” → „Układ inputów” i włącz źródła.")}</EmptyDescription><Button variant="outline" onClick={()=>setStationOpen(true)}>{t("Otwórz stanowisko")}</Button></Empty>}
     {layoutInputs.length>0&&!visibleInputs.length&&<Empty className="empty-inputs"><Search size={28}/><EmptyTitle>{t("Brak wyników")}</EmptyTitle><Button variant="outline" onClick={clearFilters}>{t("Wyczyść filtry")}</Button></Empty>}
-    {snapshot?.inputs.length ? singleMode ? director ? <DirectorPanel shortcuts={shortcuts&&!settingsOpen&&!stationOpen} inputs={visibleInputs} allInputs={snapshot.inputs} program={snapshot.mixes[focusedMix]} preview={snapshot.previews?.[focusedMix]||''} mixId={snapshot.mixInfo[focusedMix].id} busy={busy} online={online} demo={demoMode} transition={transition} duration={duration} durationValid={durationValid} onTransition={saveTransition} onPreview={input=>void route(input,focusedMix,'preview')} onProgram={input=>void route(input,focusedMix,'route','Cut')} onTake={effect=>{const input=snapshot.inputs.find(i=>i.number===snapshot.previews?.[focusedMix]||i.key===snapshot.previews?.[focusedMix]);if(input)void route(input,focusedMix,'take',effect);}}/> : <div className="source-pad" aria-label={t("Inputy dla {name}",{name:mixTitle(focusedMix)})}>
+    {snapshot?.inputs.length ? singleMode ? director ? <DirectorPanel overlayControls={snapshot.program&&(focusedMix===1||supportsAuxEffects(snapshot.version))&&Object.keys(snapshot.program.overlays).length>0?<OverlayKeys overlays={snapshot.program.overlays} sources={overlaySources} inputs={snapshot.inputs} mixId={snapshot.mixInfo[focusedMix].id} locked={busy||connecting} online={online} onControl={control=>void programControl(control)}/>:undefined} shortcuts={shortcuts&&!settingsOpen&&!stationOpen} inputs={visibleInputs} allInputs={snapshot.inputs} program={snapshot.mixes[focusedMix]} preview={snapshot.previews?.[focusedMix]||''} mixId={snapshot.mixInfo[focusedMix].id} busy={busy} online={online} demo={demoMode} transition={transition} duration={duration} durationValid={durationValid} onTransition={saveTransition} onPreview={input=>void route(input,focusedMix,'preview')} onProgram={input=>void route(input,focusedMix,'route','Cut')} onTake={effect=>{const input=snapshot.inputs.find(i=>i.number===snapshot.previews?.[focusedMix]||i.key===snapshot.previews?.[focusedMix]);if(input)void route(input,focusedMix,'take',effect);}}/> : <div className="source-pad" aria-label={t("Inputy dla {name}",{name:mixTitle(focusedMix)})}>
       {visibleInputs.map((input,index) => {
         const active = online && (snapshot.mixes[focusedMix] === input.number || snapshot.mixes[focusedMix] === input.key);
         const Icon = input.type === 'Mix' ? Layers : ['GT', 'Xaml', 'Title'].includes(input.type) ? Type : ['Video', 'VideoList', 'Capture'].includes(input.type) ? Video : Monitor;
@@ -258,7 +274,7 @@ function Dashboard() {
     </div> : <Table className={`routing-matrix ${mixNumbers.length>5?'wide-matrix':''}`} style={{minWidth:Math.max(720,280+mixNumbers.length*144)}}><colgroup><col style={{width:mixNumbers.length>5?'280px':mixNumbers.length ? '32%' : '100%'}}/>{mixNumbers.map(n=><col key={n} style={{width:mixNumbers.length>5?'144px':`${68/mixNumbers.length}%`}}/>)}</colgroup><TableHeader><TableRow><TableHead className="source-heading"><div className="matrix-heading"><span className="matrix-label">{t("ŹRÓDŁO")}</span><span className="matrix-subtitle">{t("Dostępne inputy")}</span></div></TableHead>{mixNumbers.map(n => <TableHead key={n}><div className="matrix-heading" title={mixTitle(n)}><span className="matrix-label"><i/>MIX {String(n).padStart(2,'0')}</span><span className="matrix-subtitle">{mixDisplayName(n)}</span></div></TableHead>)}</TableRow></TableHeader><TableBody>{visibleInputs.map(input => <TableRow key={input.key}><TableCell><div className="source"><span className="source-number">{input.number.padStart(2, '0')}</span><div><strong>{input.title}</strong><p>{input.type} <span>· {input.state === 'Running' ? t("Odtwarzanie") : input.state === 'Paused' ? t("Wstrzymany") : input.state}</span></p></div></div></TableCell>{mixNumbers.map(n => { const active = snapshot.mixes[n] === input.number || snapshot.mixes[n] === input.key; return <TableCell key={n}><Button className={`route-button ${active && online ? 'active' : ''}`} variant="outline" disabled={!online || busy || !durationValid || !(n in snapshot.mixes) || !input.key || input.key === snapshot.mixInfo[n]?.id} onClick={() => void route(input, n)} aria-label={t("{source} na {mix}",{source:input.title,mix:mixTitle(n)})}><span>{input.key === snapshot.mixInfo[n]?.id ? '—' : active && online ? 'PROGRAM' : t("Przełącz")}</span>{active && online ? <i/> : <ArrowUpRight size={16}/>}</Button></TableCell>; })}</TableRow>)}</TableBody></Table> : <Empty className="empty-inputs"><Monitor size={34}/><EmptyTitle>{online ? t("Brak inputów") : t(canConfigure?"Połącz się ze swoim vMix":"Waiting for the local operator to connect.")}</EmptyTitle><EmptyDescription>{online ? t("Dodaj inputy w vMix. Pojawią się tutaj automatycznie.") : (canConfigure?t("Wpisz adres komputera powyżej. Inputy i dostępne mixy zostaną pobrane automatycznie."):null)}</EmptyDescription></Empty>}
 
     </section>
-    {singleMode&&director&&snapshot?.program&&(focusedMix===1||supportsAuxEffects(snapshot.version))&&<ProgramPanel key={snapshot.mixInfo[focusedMix].id} mix={focusedMix} mixName={mixDisplayName(focusedMix)} mixId={snapshot.mixInfo[focusedMix].id} state={snapshot.program} inputs={snapshot.inputs} locked={busy||connecting} online={online} transition={transition} stingers={Object.keys(snapshot.program.overlays).length<=1?0:snapshot.version==='DEMO'||Number.parseInt(snapshot.version)>=29?8:Math.min(4,Object.keys(snapshot.program.overlays).length)} onStinger={effect=>saveTransition(effect,duration)} onControl={control=>void programControl(control)}/>}
+    {singleMode&&director&&snapshot?.program&&(focusedMix===1||supportsAuxEffects(snapshot.version))&&<ProgramPanel selected={overlaySources} onSelect={selectOverlaySource} key={snapshot.mixInfo[focusedMix].id} mix={focusedMix} mixName={mixDisplayName(focusedMix)} mixId={snapshot.mixInfo[focusedMix].id} state={snapshot.program} inputs={snapshot.inputs} locked={busy||connecting} online={online} transition={transition} stingers={Object.keys(snapshot.program.overlays).length<=1?0:snapshot.version==='DEMO'||Number.parseInt(snapshot.version)>=29?8:Math.min(4,Object.keys(snapshot.program.overlays).length)} onStinger={effect=>saveTransition(effect,duration)} onControl={control=>void programControl(control)}/>}
     <footer className="site-footer">© 2026 | <a href="https://skoczi.dev" target="_blank" rel="noopener noreferrer">Skoczi.dev</a><span className="footer-version"> · v{APP_VERSION}</span></footer>
   </main>;
 }

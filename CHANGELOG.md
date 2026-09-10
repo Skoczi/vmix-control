@@ -4,6 +4,17 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.7 — Overlay keys within reach
+
+- Numbered overlay keys beside CUT/AUTO, lit from the live shared-channel state.
+- Active key sends OUT; inactive key sends IN with the source assigned below.
+- Source choices are shared between the quick keys and detailed panel within the current dashboard session.
+- Unassigned or removed sources cannot be sent accidentally.
+- A tighter transition module with consistent spacing, quieter borders and restrained active colours.
+
+Overlay OUT still affects the shared channel across mixes. Key state updates after vMix responds.
+
+
 ## 19.6.2 — One browser, one operator
 
 - Share the operator identity across tabs at the same dashboard origin.

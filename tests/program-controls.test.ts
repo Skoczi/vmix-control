@@ -111,3 +111,20 @@ test('shared overlay lock spans different mixes',async()=>{
  const first=command(2);await signal;assert.equal((await command(3)).status,409);
  release();assert.equal((await first).status,200);
 });
+
+test('numbered overlay keys remove the active source and restore the assigned source',async()=>{
+ const {quickOverlayControl}=await import('../lib/program-controls.ts');
+ const f=fixture(),state=readVmixState(await f.read());
+ const on=quickOverlayControl(1,'','demo-title-1',state.inputs,'main');
+ assert.ok(on);assert.equal((await f.control(on)).status,200);
+ const active=readProgramState(await f.read()).overlays[1];
+ const off=quickOverlayControl(1,active,'demo-title-2',state.inputs,'main');
+ assert.deepEqual(off,{kind:'overlay',channel:1,enabled:false,expected:'demo-title-1'});
+ assert.equal((await f.control(off!)).status,200);
+ const restore=quickOverlayControl(1,'','demo-title-1',state.inputs,'main');
+ assert.equal((await f.control(restore!)).status,200);
+ assert.equal(readProgramState(await f.read()).overlays[1],'9');
+ assert.equal(quickOverlayControl(1,'',undefined,state.inputs,'main'),null);
+ assert.equal(quickOverlayControl(1,'','demo-mix-2',state.inputs,'demo-mix-2'),null);
+ assert.equal(quickOverlayControl(1,'99','demo-title-1',state.inputs,'main'),null);
+});
