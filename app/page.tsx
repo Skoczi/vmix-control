@@ -275,6 +275,6 @@ function Dashboard() {
 
     </section>
     {singleMode&&director&&snapshot?.program&&(focusedMix===1||supportsAuxEffects(snapshot.version))&&<ProgramPanel selected={overlaySources} onSelect={selectOverlaySource} key={snapshot.mixInfo[focusedMix].id} mix={focusedMix} mixName={mixDisplayName(focusedMix)} mixId={snapshot.mixInfo[focusedMix].id} state={snapshot.program} inputs={snapshot.inputs} locked={busy||connecting} online={online} transition={transition} stingers={Object.keys(snapshot.program.overlays).length<=1?0:snapshot.version==='DEMO'||Number.parseInt(snapshot.version)>=29?8:Math.min(4,Object.keys(snapshot.program.overlays).length)} onStinger={effect=>saveTransition(effect,duration)} onControl={control=>void programControl(control)}/>}
-    <footer className="site-footer">© 2026 | <a href="https://skoczi.dev" target="_blank" rel="noopener noreferrer">Skoczi.dev</a><span className="footer-version"> · v{APP_VERSION}</span></footer>
+    <footer className="site-footer">{singleMode&&director&&shortcuts&&!!snapshot?.inputs.length&&<div className="footer-shortcuts"><span><kbd>1–9</kbd><kbd>0</kbd><kbd>−</kbd><kbd>=</kbd><span>PREVIEW</span></span><span><kbd>Enter</kbd><span>AUTO</span></span><span><kbd>C</kbd><span>CUT</span></span></div>}© 2026 | <a href="https://skoczi.dev" target="_blank" rel="noopener noreferrer">Skoczi.dev</a><span className="footer-version"> · v{APP_VERSION}</span></footer>
   </main>;
 }

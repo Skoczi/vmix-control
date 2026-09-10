@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.7.3",
+    "title": "v19.7.3 · A quieter transition panel",
+    "file": "vmix-control-windows-v19.7.3.zip",
+    "sha256": "7267e3d5efa48c847cc477c558c9ecf39cf04a57c748d34ba342798362b9fcda",
+    "bytes": 248888,
+    "archived": false
+  },
+  {
     "tag": "v19.7.2",
     "title": "v19.7.2 · Same desk, every view",
     "file": "vmix-control-windows-v19.7.2.zip",
     "sha256": "a589785c6646c99ad5292456fe4fb502791e2a5822af67a161a278b7bb8ed261",
     "bytes": 248865,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.7.1",

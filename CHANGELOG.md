@@ -4,6 +4,11 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.7.3 — A quieter transition panel
+
+- Remove the status line beneath CUT/AUTO.
+- Move the keyboard reference into a compact footer row, shown only in Switcher with shortcuts enabled.
+
 ## 19.7.2 — Same desk, every view
 
 - Use the same page width for All mixes, Sources and Switcher.
