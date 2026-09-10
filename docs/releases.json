@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.7.1",
+    "title": "v19.7.1 · A sidebar that fits",
+    "file": "vmix-control-windows-v19.7.1.zip",
+    "sha256": "75991e6fed7ad4913fd5be5a90c00d4f4f7d63be67ecf7d91e8f86434af7d44a",
+    "bytes": 248868,
+    "archived": false
+  },
+  {
     "tag": "v19.7",
     "title": "v19.7 · Overlay keys within reach",
     "file": "vmix-control-windows-v19.7.zip",
     "sha256": "396111853490c90699b8178a3346faeeddeb9f0dad142d2e63277bd9447aa39d",
     "bytes": 233826,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.6.2",

@@ -4,6 +4,15 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.7.1 — A sidebar that fits
+
+- Match desktop transition-panel height to the source banks.
+- Keep CUT/AUTO visible while the settings section scrolls when needed.
+- Replace the native transition selector with a themed, grouped, keyboard-accessible menu.
+- Align the trigger and popup width; cap the menu height instead of opening a screen-long list.
+- Preserve an uncropped, flowing layout on mobile.
+
+
 ## 19.7 — Overlay keys within reach
 
 - Numbered overlay keys beside CUT/AUTO, lit from the live shared-channel state.

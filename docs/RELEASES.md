@@ -8,6 +8,7 @@ Read the [changelog](../CHANGELOG.md) for version notes. [SHA-256 checksums and 
 
 | Release | Changes |
 | --- | --- |
+| [v19.7.1](https://github.com/Skoczi/vmix-control/releases/tag/v19.7.1) | A sidebar that fits |
 | [v19.7](https://github.com/Skoczi/vmix-control/releases/tag/v19.7) | Overlay keys within reach |
 | [v19.6.2](https://github.com/Skoczi/vmix-control/releases/tag/v19.6.2) | One browser, one operator |
 | [v19.6.1](https://github.com/Skoczi/vmix-control/releases/tag/v19.6.1) | Refresh without a crowd |
