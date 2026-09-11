@@ -1,6 +1,6 @@
 /* Director console: restrained surfaces, precise spacing, clear bus colours. */
-.director-desk{--desk-line:#ffffff0d;--desk-muted:#85939d;display:grid;grid-template-columns:minmax(0,1fr) 252px;gap:0;background:#11171c;border-top:1px solid var(--desk-line)}
-.director-buses{min-width:0;padding:24px;background:radial-gradient(ellipse at 30% 0,#24303a24,transparent 60%),#11171c}
+.director-desk{--desk-line:#ffffff0d;--desk-muted:#85939d;display:grid;grid-template-columns:minmax(0,1fr) 252px;gap:0;background:#11171c;border:1px solid #293940;border-radius:12px}
+.director-buses{min-width:0;padding:24px;border-radius:inherit;background:radial-gradient(ellipse at 30% 0,#24303a24,transparent 60%),#11171c}
 .bus-readouts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
 .bus-readout{position:relative;min-width:0;padding:17px 20px;border:1px solid #ffffff0c;border-radius:10px;background:#181e24;box-shadow:0 2px 8px #00000012}
 .bus-readout:before{content:'';position:absolute;left:0;top:20px;bottom:20px;width:2px;background:#ee7875;border-radius:2px}

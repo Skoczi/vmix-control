@@ -4,6 +4,11 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.8.1 — Matching panel edges
+
+- Give Switcher the same rounded corners and border as Production controls.
+- Keep the inner background inside the rounded panel shape without clipping controls.
+
 ## 19.8.0 — One row, less noise
 
 - Combine mix selection, Switcher/Sources and operating controls in one desktop toolbar.

@@ -8,6 +8,7 @@ Read the [changelog](../CHANGELOG.md) for version notes. [SHA-256 checksums and 
 
 | Release | Changes |
 | --- | --- |
+| [v19.8.1](https://github.com/Skoczi/vmix-control/releases/tag/v19.8.1) | Matching panel edges |
 | [v19.8.0](https://github.com/Skoczi/vmix-control/releases/tag/v19.8.0) | One row, less noise |
 | [v19.7.4](https://github.com/Skoczi/vmix-control/releases/tag/v19.7.4) | Room for every control |
 | [v19.7.3](https://github.com/Skoczi/vmix-control/releases/tag/v19.7.3) | A quieter transition panel |

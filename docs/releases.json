@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.8.1",
+    "title": "v19.8.1 · Matching panel edges",
+    "file": "vmix-control-windows-v19.8.1.zip",
+    "sha256": "b9aedaf4b93e006806ed0a5fb22d63496593ce1ab41845c6fedf1cff64d763a1",
+    "bytes": 249463,
+    "archived": false
+  },
+  {
     "tag": "v19.8.0",
     "title": "v19.8.0 · One row, less noise",
     "file": "vmix-control-windows-v19.8.0.zip",
     "sha256": "e4a239cd7a2106e168ea9fb1e84faad22375cbd5f661c812f42ba79c26d16b6b",
     "bytes": 249453,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.7.4",
