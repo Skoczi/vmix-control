@@ -1,4 +1,6 @@
-export const accessRows=`Password protection|Ochrona hasłem|Passwortschutz|Protection par mot de passe|Protección con contraseña|Protecție prin parolă|Защита паролем|Protezione con password|Proteção por senha|Захист паролем
+export const accessRows=`Operator name|Nazwa operatora|Bedienername|Nom de l’opérateur|Nombre del operador|Numele operatorului|Имя оператора|Nome operatore|Nome do operador|Ім’я оператора
+Enter an operator name (1–80 characters)|Wpisz nazwę operatora (1–80 znaków)|Bedienernamen eingeben (1–80 Zeichen)|Saisissez un nom d’opérateur (1–80 caractères)|Introduce un nombre de operador (1–80 caracteres)|Introdu un nume de operator (1–80 de caractere)|Введите имя оператора (1–80 символов)|Inserisci un nome operatore (1–80 caratteri)|Insira um nome de operador (1–80 caracteres)|Введіть ім’я оператора (1–80 символів)
+Password protection|Ochrona hasłem|Passwortschutz|Protection par mot de passe|Protección con contraseña|Protecție prin parolă|Защита паролем|Protezione con password|Proteção por senha|Захист паролем
 Password required|Wymagane hasło|Passwort erforderlich|Mot de passe requis|Contraseña requerida|Parolă necesară|Требуется пароль|Password richiesta|Senha necessária|Потрібен пароль
 Password|Hasło|Passwort|Mot de passe|Contraseña|Parolă|Пароль|Password|Senha|Пароль
 Current password|Obecne hasło|Aktuelles Passwort|Mot de passe actuel|Contraseña actual|Parola actuală|Текущий пароль|Password attuale|Senha atual|Поточний пароль

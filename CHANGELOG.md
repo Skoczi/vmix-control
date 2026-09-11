@@ -4,6 +4,16 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.9.0 — Put a name to the controls
+
+- Require an operator name when signing in with the shared password.
+- Reject empty names and whitespace-only values in the form and API.
+- Use the name immediately for presence and the Station operator field.
+- Remember the name in the browser, with a session fallback when browser storage is unavailable.
+- Translate the new login fields and validation into all supported languages.
+
+Localhost access still skips login. Updating the server ends existing login sessions; LAN operators sign in again.
+
 ## 19.8.1 — Matching panel edges
 
 - Give Switcher the same rounded corners and border as Production controls.

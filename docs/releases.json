@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.9.0",
+    "title": "v19.9.0 · Put a name to the controls",
+    "file": "vmix-control-windows-v19.9.0.zip",
+    "sha256": "93aa343f8b03a39459e1defc75480c1a1c10385f2e8d84e7e56a3a3abdd25fb7",
+    "bytes": 249984,
+    "archived": false
+  },
+  {
     "tag": "v19.8.1",
     "title": "v19.8.1 · Matching panel edges",
     "file": "vmix-control-windows-v19.8.1.zip",
     "sha256": "b9aedaf4b93e006806ed0a5fb22d63496593ce1ab41845c6fedf1cff64d763a1",
     "bytes": 249463,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.8.0",

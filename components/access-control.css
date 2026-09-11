@@ -5,3 +5,5 @@
 .password-requirements{font-size:11px;color:#91a8b7;line-height:1.5}
 
 .access-password-field{display:grid;gap:7px}.password-input-wrap{position:relative}.password-error-bubble{position:absolute;z-index:2;bottom:calc(100% + 8px);right:0;max-width:100%;padding:8px 11px;border:1px solid #875650;border-radius:8px;background:#3a2729;color:#ffd1c9;font-size:11px;line-height:1.4;box-shadow:0 5px 18px #0004;pointer-events:none}.password-error-bubble:after{content:"";position:absolute;right:16px;bottom:-5px;width:8px;height:8px;background:#3a2729;border-right:1px solid #875650;border-bottom:1px solid #875650;transform:rotate(45deg)}
+
+.access-login-field{display:grid;gap:7px}.access-login-field input{background:#10191f;border-color:#344653}

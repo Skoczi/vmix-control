@@ -14,7 +14,7 @@ A browser control surface for vMix. Run one server on your production network. G
 - **Operator stations:** profiles, favorites, groups, source ordering and adjustable tile density. Drag handles and keyboard alternatives are included.
 - **Production controls:** keyboard shortcuts, previous-source recall, focus mode and a local configuration lock.
 - **Shared connection:** the local administrator selects the vMix address or starts demo. LAN operators join that connection automatically after login.
-- **Access control:** optional shared password for LAN clients. Connection and password configuration are restricted to the local administrator.
+- **Access control:** optional shared password for LAN clients, with a required operator name at login. Connection and password configuration are restricted to the local administrator.
 - **Demo:** 24 simulated inputs and 16 mixes, with shared PROGRAM/PREVIEW state. No vMix installation required.
 
 English by default. Also available in Polish, German, French, Spanish, Romanian, Russian, Italian, Portuguese and Ukrainian. Source names from vMix are preserved.

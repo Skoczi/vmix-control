@@ -41,7 +41,7 @@ function parse(xml: string): Snapshot {
 }
 export default function Home(){return <LanguageProvider><AccessGate><Dashboard/></AccessGate></LanguageProvider>;}
 function Dashboard() {
- const {local:canConfigure}=useAccess();
+ const {local:canConfigure,operatorName:loginOperatorName}=useAccess();
  const {t,language}=useLanguage();
   const [address, setAddress] = useState('127.0.0.1:8088');
   const [target, setTarget] = useState('');
@@ -77,8 +77,8 @@ function Dashboard() {
   const [onAir,setOnAir]=useState(false);
   const [focusMode,setFocusMode]=useState(false);
   const [shortcuts,setShortcuts]=useState(true);
-  const [operatorName,setOperatorName]=useState('');
-  useEffect(()=>{try{setOperatorName(localStorage.getItem('vmix-operator-name')||'');setShortcuts(localStorage.getItem('vmix-shortcuts')!=='false');}catch{}},[]);
+  const [operatorName,setOperatorName]=useState(loginOperatorName);
+  useEffect(()=>{try{setOperatorName(localStorage.getItem('vmix-operator-name')||loginOperatorName);setShortcuts(localStorage.getItem('vmix-shortcuts')!=='false');}catch{}},[]);
   function changeOperatorName(value:string){setOperatorName(value);try{localStorage.setItem('vmix-operator-name',value);}catch{}}
   function changeShortcuts(value:boolean){setShortcuts(value);try{localStorage.setItem('vmix-shortcuts',String(value));}catch{}}
   const [previousSources,setPreviousSources]=useState<Record<string,string>>({});
