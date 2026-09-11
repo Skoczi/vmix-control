@@ -4,6 +4,13 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.8.0 — One row, less noise
+
+- Combine mix selection, Switcher/Sources and operating controls in one desktop toolbar.
+- Remove the repeated mix heading.
+- Move operator details into a compact popover with a live count.
+- Keep Focus controls accessible and let the toolbar wrap on smaller screens.
+
 ## 19.7.4 — Room for every control
 
 - Let the Switcher grow to fit transitions, overlays and CUT/AUTO without an inner scrollbar.

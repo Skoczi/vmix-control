@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.8.0",
+    "title": "v19.8.0 · One row, less noise",
+    "file": "vmix-control-windows-v19.8.0.zip",
+    "sha256": "e4a239cd7a2106e168ea9fb1e84faad22375cbd5f661c812f42ba79c26d16b6b",
+    "bytes": 249453,
+    "archived": false
+  },
+  {
     "tag": "v19.7.4",
     "title": "v19.7.4 · Room for every control",
     "file": "vmix-control-windows-v19.7.4.zip",
     "sha256": "2c5386e19c0e6457cede95c7c4f2ee102d0673469b8425d6f96445e681b83b8a",
     "bytes": 248869,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.7.3",
