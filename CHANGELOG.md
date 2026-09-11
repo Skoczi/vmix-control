@@ -4,6 +4,12 @@ What changed, what got fixed, and what got out of the way. Latest first.
 
 Reconstructed from preserved packages and change notes. Older builds are kept as an archive; use the latest release for current work. Original version numbers are preserved.
 
+## 19.9.1 — The host has a name
+
+- Show localhost operators as Host (Admin), including in other operators’ presence lists.
+- Keep the host name fixed in Station; LAN operators retain their chosen names.
+- Determine the host label from the verified local connection.
+
 ## 19.9.0 — Put a name to the controls
 
 - Require an operator name when signing in with the shared password.

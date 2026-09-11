@@ -1,4 +1,5 @@
 import {networkInterfaces} from 'node:os';
+import {isLocalRequest} from './local-access.ts';
 import {canonicalVmixUrl} from './vmix-proxy.ts';
 export type Operator={id:string;name:string;mixId:string;onAir:boolean};
 export function createPresenceService(now=Date.now){
@@ -14,7 +15,7 @@ export function createPresenceService(now=Date.now){
    const room=body.address==='demo'?'demo':canonicalVmixUrl(body.address,local).href;
    for(const [id,record] of records)if(now()-record.seen>20000)records.delete(id);
    if(body.leave===true)records.delete(body.id);
-   else{if(records.size>=128&&!records.has(body.id))return json({error:'Capacity reached'},429);records.set(body.id,{id:body.id,name:body.name.trim(),mixId:body.mixId,onAir:body.onAir,room,seen:now()});}
+   else{if(records.size>=128&&!records.has(body.id))return json({error:'Capacity reached'},429);records.set(body.id,{id:body.id,name:isLocalRequest(request)?'Host (Admin)':body.name.trim(),mixId:body.mixId,onAir:body.onAir,room,seen:now()});}
    return json({operators:[...records.values()].filter(r=>r.room===room).map(({id,name,mixId,onAir})=>({id,name,mixId,onAir}))});
   }catch{return json({error:'Invalid presence request'},400);}
  };

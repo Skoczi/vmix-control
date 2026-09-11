@@ -1,11 +1,19 @@
 [
   {
+    "tag": "v19.9.1",
+    "title": "v19.9.1 · The host has a name",
+    "file": "vmix-control-windows-v19.9.1.zip",
+    "sha256": "d1332ef7cf01a88b97f20e8e956dbdc2ee33ec4bbb04e36f4c41e5b6e22020ef",
+    "bytes": 250064,
+    "archived": false
+  },
+  {
     "tag": "v19.9.0",
     "title": "v19.9.0 · Put a name to the controls",
     "file": "vmix-control-windows-v19.9.0.zip",
     "sha256": "93aa343f8b03a39459e1defc75480c1a1c10385f2e8d84e7e56a3a3abdd25fb7",
     "bytes": 249984,
-    "archived": false
+    "archived": true
   },
   {
     "tag": "v19.8.1",

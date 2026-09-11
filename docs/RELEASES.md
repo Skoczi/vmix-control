@@ -8,6 +8,7 @@ Read the [changelog](../CHANGELOG.md) for version notes. [SHA-256 checksums and 
 
 | Release | Changes |
 | --- | --- |
+| [v19.9.1](https://github.com/Skoczi/vmix-control/releases/tag/v19.9.1) | The host has a name |
 | [v19.9.0](https://github.com/Skoczi/vmix-control/releases/tag/v19.9.0) | Put a name to the controls |
 | [v19.8.1](https://github.com/Skoczi/vmix-control/releases/tag/v19.8.1) | Matching panel edges |
 | [v19.8.0](https://github.com/Skoczi/vmix-control/releases/tag/v19.8.0) | One row, less noise |
